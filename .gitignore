@@ -30,7 +30,5 @@
 *.exe
 *.out
 *.app
-Tutor_Management_System/.vs/Tutor_Management_System/v15/Browse.VC.opendb
-Tutor_Management_System/.vs/Tutor_Management_System/v15/Solution.VC.db
-Tutor_Management_System/.vs/Tutor_Management_System/v15/Solution.VC.db-wal
-Tutor_Management_System/.vs/Tutor_Management_System/v15/Solution.VC.db-shm
+Tutor_Management_System/.vs/*
+Tutor_Management_System/.vs/Tutor_Management_System/v15/Browse.VC.db

@@ -15,7 +15,7 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Tutor_Management_System.cpp">
+    <ClCompile Include="Array_Tutor_Management_System.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
