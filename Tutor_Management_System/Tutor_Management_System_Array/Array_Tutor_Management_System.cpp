@@ -2,10 +2,59 @@
 //
 
 #include <iostream>
+#include <string>
+
+using namespace std;
+
+struct Tutors {
+	int tutorID;	// Tutor ID in the center
+	string name;	// Tutor name in the center
+	string dateJoined;	// Date of joining the center
+	string dateTerminated;	// Date of leaving the center
+	float payRate;	// Tutor pay rate in the center
+	string phone;	// Tutor phone number
+	string address;	// Tutor home address
+	int centreCode;	// Code of centre tutor working at
+	string cntreName;	// Name of centre tutor working at
+	int subjectCode;	// Code of subject tutor teaching
+	string subjectName;	// Name of subject tutor teaching
+	int rating;		// Tutor Performance in the center
+};
+
+void sortID(Tutors *ptr, int id);	// Display tutor list by Tutor ID
+
+void sortPayRate(Tutors *ptr, float pr);	// Display tutor list by hourly pay rate 
+
+void sortRating(Tutors *ptr, int r);	// Display tutor list by overall performance
+
+void modifyTutor(Tutors *ptr, string p, string a);	// Modify tutor phone number and home address
+
+void deleteTutor(Tutors *ptr, string n);	// Delete tutor record
 
 int main()
 {
-    std::cout << "Hello World!\n";
+	Tutors tutorList[100];	// Declare array of tutor with maximum 100 records
+	Tutors *tutorPtr = tutorList;	// Pointer points to the array of tutor
+}
+
+void sortID(Tutors *ptr, int id) {
+
+}
+
+void sortPayRate(Tutors *ptr, float pr) {
+
+}
+
+void sortRating(Tutors *ptr, int r) {
+
+}
+
+void modifyTutor(Tutors *ptr, string p, string a) {
+
+}
+
+void deleteTutor(Tutors *ptr, string n) {
+
 }
 
 // Run program: Ctrl + F5 or Debug > Start Without Debugging menu
