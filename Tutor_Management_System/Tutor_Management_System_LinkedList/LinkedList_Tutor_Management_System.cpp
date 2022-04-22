@@ -2,21 +2,29 @@
 //
 
 #include <iostream>
+#include "Tutor.h"
 
 int main()
 {
-    std::cout << "Hello World!\n";
-	//THIS IS THE LINKED LIST FILE
+	test("123");
+
+	/*int test[5] = { 1,2,3,4,5 };
+
+	for (size_t i = 0; i < sizeof(test) / sizeof(test[0]); i++)
+	{
+		std::cout << test[i] << std::endl;
+	}
+
+	std::cout << "\n NewTest" << std::endl;
+	const int arrCount = (sizeof(test) / sizeof(test[0]));
+	
+	int newTest[arrCount+1];
+	std::copy(test, test + (arrCount), newTest);
+	newTest[arrCount] = 6;
+
+	for (size_t i = 0; i < (sizeof(newTest) / sizeof(newTest[0])); i++)
+	{
+		std::cout << newTest[i] << std::endl;
+
+	}*/
 }
-
-// Run program: Ctrl + F5 or Debug > Start Without Debugging menu
-// Debug program: F5 or Debug > Start Debugging menu
-
-// Tips for Getting Started: 
-//   1. Use the Solution Explorer window to add/manage files
-//   2. Use the Team Explorer window to connect to source control
-//   3. Use the Output window to see build output and other messages
-//   4. Use the Error List window to view errors
-//   5. Go to Project > Add New Item to create new code files, or Project > Add Existing Item to add existing code files to the project
-//   6. In the future, to open this project again, go to File > Open > Project and select the .sln file
-
