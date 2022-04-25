@@ -4,27 +4,62 @@
 #include <iostream>
 #include "Tutor.h"
 
+
 int main()
 {
-	test("123");
+	//Sample Function Call
+	//test("test");
 
-	/*int test[5] = { 1,2,3,4,5 };
+	//Variables
+	int menuInput = -1;
 
-	for (size_t i = 0; i < sizeof(test) / sizeof(test[0]); i++)
+	cout << "Login to be implemented..." << endl;
+	cout << "Hit Enter to proceed" << endl;
+
+	cin.get();
+
+	//cout << "Main Menu:" << endl;
+	//cout << "1. Display All Tutor" << endl;
+	//cout << "2. Add New Tutor" << endl;
+	//cout << "3. Search by Tutor ID" << endl;
+	//cout << "4. Search by Tutor Rating" << endl;
+	//cout << "5. Exit" << endl;
+	//cout << "Please enter the desired menu option: ";
+
+	do
 	{
-		std::cout << test[i] << std::endl;
-	}
+		mainMenu();
+		cin >> menuInput;
 
-	std::cout << "\n NewTest" << std::endl;
-	const int arrCount = (sizeof(test) / sizeof(test[0]));
-	
-	int newTest[arrCount+1];
-	std::copy(test, test + (arrCount), newTest);
-	newTest[arrCount] = 6;
+		int tutorMenu = -1;
+		switch (menuInput)
+		{
+		case 1:
+			cout << endl;
+			do
+			{
+				tutorListMenu();
+				cin >> tutorMenu;
+				tutorMenuControl(&tutorMenu);
 
-	for (size_t i = 0; i < (sizeof(newTest) / sizeof(newTest[0])); i++)
-	{
-		std::cout << newTest[i] << std::endl;
+				cout << endl;
+			} while (tutorMenu > 0);
 
-	}*/
+			break;
+		case 2:
+			cout << "Add New Tutor" << endl;
+			break;
+		case 3:
+			cout << "Search ID" << endl;
+			break;
+		case 4:
+			cout << "Search Rating" << endl;
+			break;
+		default:
+			break;
+		}
+	} while (menuInput > 0);
+
+
+	return 0;
 }

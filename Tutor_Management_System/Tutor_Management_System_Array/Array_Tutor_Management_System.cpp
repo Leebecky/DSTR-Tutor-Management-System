@@ -6,68 +6,62 @@
 #include "Tutor.h"
 
 using namespace std;
-//
-//struct Tutors {
-//	int tutorID;	// Tutor ID in the center
-//	string name;	// Tutor name in the center
-//	string dateJoined;	// Date of joining the center
-//	string dateTerminated;	// Date of leaving the center
-//	float payRate;	// Tutor pay rate in the center
-//	string phone;	// Tutor phone number
-//	string address;	// Tutor home address
-//	int centreCode;	// Code of centre tutor working at
-//	string cntreName;	// Name of centre tutor working at
-//	int subjectCode;	// Code of subject tutor teaching
-//	string subjectName;	// Name of subject tutor teaching
-//	int rating;		// Tutor Performance in the center
-//};
-//
-//void sortID(Tutors *ptr, int id);	// Display tutor list by Tutor ID
-//
-//void sortPayRate(Tutors *ptr, float pr);	// Display tutor list by hourly pay rate 
-//
-//void sortRating(Tutors *ptr, int r);	// Display tutor list by overall performance
-//
-//void modifyTutor(Tutors *ptr, string p, string a);	// Modify tutor phone number and home address
-//
-//void deleteTutor(Tutors *ptr, string n);	// Delete tutor record
 
 int main()
 {
-	//Tutors tutorList[100];	// Declare array of tutor with maximum 100 records
-	//Tutors *tutorPtr = tutorList;	// Pointer points to the array of tutor
+	//Sample Function Call
+	//test("test");
 
-	test("test");
+	//Variables
+	int menuInput = -1;
 
+	cout << "Login to be implemented..." << endl;
+	cout << "Hit Enter to proceed" << endl;
+
+	cin.get();
+
+	//cout << "Main Menu:" << endl;
+	//cout << "1. Display All Tutor" << endl;
+	//cout << "2. Add New Tutor" << endl;
+	//cout << "3. Search by Tutor ID" << endl;
+	//cout << "4. Search by Tutor Rating" << endl;
+	//cout << "5. Exit" << endl;
+	//cout << "Please enter the desired menu option: ";
+
+	do
+	{
+		mainMenu();
+		cin >> menuInput;
+
+		int tutorMenu = -1;
+		switch (menuInput)
+		{
+		case 1:
+			cout << endl;
+			do
+			{
+				tutorListMenu();
+				cin >> tutorMenu;
+				tutorMenuControl(&tutorMenu);
+
+				cout << endl;
+			} while (tutorMenu > 0);
+
+			break;
+		case 2:
+			cout << "Add New Tutor" << endl;
+			break;
+		case 3:
+			cout << "Search ID" << endl;
+			break;
+		case 4:
+			cout << "Search Rating" << endl;
+			break;
+		default:
+			break;
+		}
+	} while (menuInput > 0);
+
+
+	return 0;
 }
-//
-//void sortID(Tutors *ptr, int id) {
-//
-//}
-//
-//void sortPayRate(Tutors *ptr, float pr) {
-//
-//}
-//
-//void sortRating(Tutors *ptr, int r) {
-//
-//}
-//
-//void modifyTutor(Tutors *ptr, string p, string a) {
-//
-//}
-//
-//void deleteTutor(Tutors *ptr, string n) {
-//
-//}
-
-// Run program: Ctrl + F5 or Debug > Start Without Debugging menu
-// Debug program: F5 or Debug > Start Debugging menu
-
-// Tips for Getting Started: 
-//   1. Use the Solution Explorer window to add/manage files
-//   2. Use the Team Explorer window to connect to source control
-//   3. Use the Output window to see build output and other messages
-//   4. Use the Error List window to view errors
-//   5. Go to Project > Add New Item to create new code files, or Project > Add Existing Item to add existing code files to the project
-//   6. In the future, to open this project again, go to File > Open > Project and select the .sln file

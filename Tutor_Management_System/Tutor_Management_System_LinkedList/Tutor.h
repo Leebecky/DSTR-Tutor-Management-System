@@ -3,6 +3,7 @@
 #include<string>
 #include<ctime>
 
+using namespace std;
 struct Tutor { //Implementation of Tutor for linked list
 
 	//Data Fields
@@ -24,8 +25,13 @@ struct Tutor { //Implementation of Tutor for linked list
 	Tutor* prev;
 };
 
-void test(std::string test);
-//void addTutor(Tutor* head, Tutor* newData); //Adds a new tutor to the list
+void test(std::string test); //Sample Function
+
+void mainMenu(); // Main Menu
+void tutorListMenu(); // Main Menu > Display All Tutor
+void tutorMenuControl(int* input); //Tutor List Menu Control
+
+void addTutor(Tutor* head, Tutor* newData); //Adds a new tutor to the list
 //void modifyTutor(Tutor* head, std::string tutorId, std::string data, std::string attribute); //Updates the tutor record
 //bool deleteTutor(Tutor* head, std::string tutorId); //Deletes the selected tutor and returns True/False to indicate success
 //void displayTutorList(Tutor* head) {} //Displays the list of all tutors
