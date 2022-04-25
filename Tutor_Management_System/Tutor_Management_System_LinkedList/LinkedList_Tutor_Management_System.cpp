@@ -2,21 +2,64 @@
 //
 
 #include <iostream>
+#include "Tutor.h"
+
 
 int main()
 {
-    std::cout << "Hello World!\n";
-	//THIS IS THE LINKED LIST FILE
+	//Sample Function Call
+	//test("test");
+
+	//Variables
+	int menuInput = -1;
+
+	cout << "Login to be implemented..." << endl;
+	cout << "Hit Enter to proceed" << endl;
+
+	cin.get();
+
+	//cout << "Main Menu:" << endl;
+	//cout << "1. Display All Tutor" << endl;
+	//cout << "2. Add New Tutor" << endl;
+	//cout << "3. Search by Tutor ID" << endl;
+	//cout << "4. Search by Tutor Rating" << endl;
+	//cout << "5. Exit" << endl;
+	//cout << "Please enter the desired menu option: ";
+
+	do
+	{
+		mainMenu();
+		cin >> menuInput;
+
+		int tutorMenu = -1;
+		switch (menuInput)
+		{
+		case 1:
+			cout << endl;
+			do
+			{
+				tutorListMenu();
+				cin >> tutorMenu;
+				tutorMenuControl(&tutorMenu);
+
+				cout << endl;
+			} while (tutorMenu > 0);
+
+			break;
+		case 2:
+			cout << "Add New Tutor" << endl;
+			break;
+		case 3:
+			cout << "Search ID" << endl;
+			break;
+		case 4:
+			cout << "Search Rating" << endl;
+			break;
+		default:
+			break;
+		}
+	} while (menuInput > 0);
+
+
+	return 0;
 }
-
-// Run program: Ctrl + F5 or Debug > Start Without Debugging menu
-// Debug program: F5 or Debug > Start Debugging menu
-
-// Tips for Getting Started: 
-//   1. Use the Solution Explorer window to add/manage files
-//   2. Use the Team Explorer window to connect to source control
-//   3. Use the Output window to see build output and other messages
-//   4. Use the Error List window to view errors
-//   5. Go to Project > Add New Item to create new code files, or Project > Add Existing Item to add existing code files to the project
-//   6. In the future, to open this project again, go to File > Open > Project and select the .sln file
-
