@@ -152,6 +152,10 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="LinkedList_Tutor_Management_System.cpp" />
+    <ClCompile Include="Tutor.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Tutor.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
