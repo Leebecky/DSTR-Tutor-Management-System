@@ -1,7 +1,10 @@
 #include "Tutor.h"
 #include <string>
 #include <iostream>
+#include <chrono>
 using namespace std;
+
+#pragma warning(disable : 4996)
 
 Tutor tutorArray[3];
 
@@ -32,6 +35,11 @@ void definedTutor(Tutor* head) {
 	string centerNameList[15] = {"KL", "KL", "BM", "BM", "JB", "KK", "SG", "BM", "KK", "JB", "SG", "KL", "BM", "KK", "JB"};
 	int ratingList[15] = {4, 5, 3, 5, 4, 3 , 4, 2, 5, 4, 3, 5, 2, 4, 3};
 
+	time_t dateJoined = time(NULL) - 31536000;
+	time_t withinMonths = time(NULL) - 2592000;
+	time_t outsideMonths = time(NULL) - 17280000;
+	time_t dateTerminated[15] = {0, withinMonths, outsideMonths, 0, withinMonths, 0, 0, outsideMonths, withinMonths, outsideMonths,  0, withinMonths, withinMonths, outsideMonths, 0};
+
 	for (int i = 0; i < 15; i++) {
 		(head + i)->tutorId = tutorIdList[i];
 		(head + i)->name = nameList[i];
@@ -39,6 +47,8 @@ void definedTutor(Tutor* head) {
 		(head + i)->centerCode = centerCodeList[i];
 		(head + i)->centerName = centerNameList[i];
 		(head + i)->rating = ratingList[i];
+		(head + i)->dateJoined = dateJoined;
+		(head + i)->dateTerminated = dateTerminated[i];
 	}
 }
 
@@ -99,11 +109,7 @@ void tutorMenuControl(int* input, Tutor* head, int* size, int* currentPage)
 
 		if (result) {
 			*size = *size - 1;
-			cout << "tutorMenuControl *size = " << *size << endl;
 			cout << "Tutor deleted." << endl;
-		}
-		else {
-			cout << "Tutor cannot be deleted." << endl;
 		}
 		break;
 	case 6:
@@ -119,6 +125,7 @@ void tutorMenuControl(int* input, Tutor* head, int* size, int* currentPage)
 
 void displayTutorList(Tutor* head, int size, int* currentPage) {
 	int currentPosition, maxPosition, maxPage;
+	tm* dateTerminated;
 	if (size % 5 != 0) {
 		maxPage = (size / 5) + 1;
 	}
@@ -147,7 +154,9 @@ void displayTutorList(Tutor* head, int size, int* currentPage) {
 	cout << "Pay Rate" << "\t| ";
 	cout << "Center Code" << "\t| ";
 	cout << "Center Name" << "\t| ";
-	cout << "Rating" << endl;
+	cout << "Rating" << "\t| ";
+	//cout << "Date Joined" << "\t| ";
+	cout << "Date Terminated" << endl;
 
 	for (int i = currentPosition; i < maxPosition; i++)
 	{
@@ -156,7 +165,17 @@ void displayTutorList(Tutor* head, int size, int* currentPage) {
 		cout << (head + i)->hourlyPayRate << "\t\t| ";
 		cout << (head + i)->centerCode << "\t\t| ";
 		cout << (head + i)->centerName << "\t\t| ";
-		cout << (head + i)->rating << endl;
+		cout << (head + i)->rating << "\t\t| ";
+		//cout << (head + i)->dateJoined->tm_year + 1900 << "-" << (head + i)->dateJoined->tm_mon + 1 << "-" << (head + i)->dateJoined->tm_mday << "\t| ";
+
+		dateTerminated = localtime(&(head + i)->dateTerminated);
+
+		if (dateTerminated->tm_year + 1900 == 1970) {
+			cout << " - " << endl;
+		}
+		else {
+			cout << dateTerminated->tm_year + 1900 << "-" << dateTerminated->tm_mon + 1 << "-" << dateTerminated->tm_mday << endl;
+		}
 	}
 
 	cout << "\nPage  " << *currentPage << " / " << maxPage << endl;
@@ -263,21 +282,30 @@ void mergeSorting(Tutor* head, int low, int high, int mid) {
 
 bool deleteTutor(Tutor* head, int low, int size, int tutorId) {
 	int mid, p = 0, high = size;
+	time_t today = time(NULL);
 
 	while (low <= high) {
 		mid = (low + high) / 2;
 
 		if (tutorId == (head + mid)->tutorId) {
-			// Need check terminated date
+			cout << "\n\n";
 
-			cout << endl;
-			for (int i = mid; i < size; i++) {
-				cout << "i = " << i << endl;
-				head[i] = head[i + 1];
+			if ((head + mid)->dateTerminated == 0) {
+				cout << "Tutor cannot be deleted because tutor is not terminated." << endl;
+				return false;
 			}
+			else if (today - (head + mid)->dateTerminated < 15552000) {
+				cout << "Tutor cannot be deleted because terminated date is less than 6 months." << endl;
+				return false;
+			}
+			else {
+				for (int i = mid; i < size; i++) {
+					head[i] = head[i + 1];
+				}
 
-			p = 1;
-			return true;
+				p = 1;
+				return true;
+			}
 		}
 		else {
 			if (tutorId < (head + mid)->tutorId) {
@@ -290,6 +318,7 @@ bool deleteTutor(Tutor* head, int low, int size, int tutorId) {
 	}
 
 	if (p != 1) {
+		cout << "\n\nTutor cannot be deleted because tutor Id not found." << endl;
 		return false;
 	}
 

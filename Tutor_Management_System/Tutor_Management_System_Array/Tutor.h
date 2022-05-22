@@ -1,15 +1,16 @@
 #pragma once
 
-#include<string>
-#include<ctime>
+#include <string>
+#include <ctime>
+#include <chrono>
 using namespace std;
 struct Tutor { //Implementation of Tutor for array
 
 	//Data Fields
 	int tutorId;
 	string name;
-	tm dateJoined;
-	tm dateTerminated;
+	time_t dateJoined;
+	time_t dateTerminated;
 	double hourlyPayRate;
 	string phone;
 	string address;
