@@ -23,6 +23,9 @@ struct Tutor { //Implementation of Tutor for linked list
 	// Link address
 	Tutor* next;
 	Tutor* prev;
+
+public: //Constructor
+	Tutor(int tutorId, string name, tm dateJoined, double hourlyPayRate, string phone, string address, int centerCode, string centreName, int subjectCode, string subjectName, int rating); //Base constructor
 };
 
 void test(std::string test); //Sample Function

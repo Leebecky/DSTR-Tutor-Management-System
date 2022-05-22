@@ -1,14 +1,29 @@
 #include<string>
 #include<iostream>
+#include<ctime>
+
 #include "Tutor.h"
 
 using namespace std;
 
-void test(std::string test) {
-	std::cout << test << " | Test" << std::endl;
+Tutor::Tutor(int tutorId, string name, tm dateJoined, double hourlyPayRate, string phone, string address, int centerCode, string centerName, int subjectCode, string subjectName, int rating)  //Base Constructor
+{
+	this->tutorId = tutorId;
+	this->name = name;
+	this->dateJoined = dateJoined;
+	this->hourlyPayRate = hourlyPayRate;
+	this->phone = phone;
+	this->address = address;
+	this->centerCode = centerCode;
+	this->centerName = centerName;
+	this->subjectCode = subjectCode;
+	this->subjectName = subjectName;
+	this->rating = rating;
+
 }
 
 
+//Display the main menu
 void mainMenu()
 {
 	cout << "Main Menu:" << endl;
@@ -21,6 +36,7 @@ void mainMenu()
 }
 
 
+//Display the menu when viewing the tutor list
 void tutorListMenu()
 {
 	cout << "Tutor List:" << endl;
@@ -35,6 +51,8 @@ void tutorListMenu()
 	cout << "Please enter the desired menu option: ";
 }
 
+
+//Redirects the user based on given input
 void tutorMenuControl(int* input)
 {
 	switch (*input)
@@ -60,7 +78,16 @@ void tutorMenuControl(int* input)
 }
 
 
+void preDefinedData(Tutor *head) {
+	Tutor *data1 = new Tutor("1", "Zainul bin Zabidin", tm(), 150.00, "011-1234567", "19, Jalan A12, Taman Asia, 68000 Ampang, Selangor", 1, "Pusat Asia Jaya", 1, "Bahasa Melayu", 4);
+	Tutor *data2 = new Tutor("2", "Alina Chan Mei Yi", tm(), 250.00, "016-5423412", "22, Jalan B1, Taman Bestari, 68000 Ampang, Selangor", 1, "Pusat Asia Jaya", 5, "Biology", 5);
+	Tutor *data3 = new Tutor("3", "Dhanyasree a/p Muthusamy", tm(), 200.00, "017-3415136", "A12, Block-C, Oakleaf Condominium, 51000 Kuala Lumpur", 1, "Pusat Asia Jaya", 2, "English", 4);
+	Tutor *data4 = new Tutor("4", "Zainul bin Zabidin", tm(), 150.00, "011-1234567", "19, Jalan A12, Taman Asia, 68000 Ampang, Selangor", 1, "Pusat Asia Jaya", 1, "Bahasa Melayu", 4.5);
+	Tutor *data5 = new Tutor("5", "Zainul bin Zabidin", tm(), 150.00, "011-1234567", "19, Jalan A12, Taman Asia, 68000 Ampang, Selangor", 1, "Pusat Asia Jaya", 1, "Bahasa Melayu", 4.5);
+}
+
 void addTutor(Tutor * head, Tutor * newData)
 {
 
 }
+
