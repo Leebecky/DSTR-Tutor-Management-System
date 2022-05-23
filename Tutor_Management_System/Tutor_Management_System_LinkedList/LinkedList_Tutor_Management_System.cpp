@@ -2,11 +2,21 @@
 //
 
 #include <iostream>
+#include <chrono>
+
 #include "Tutor.h"
 
 
 int main()
 {
+	// Logging start up time
+	std::time_t end_time = std::chrono::system_clock::to_time_t(std::chrono::system_clock::now());
+	char timeStamp[26] = {};
+	string timeStampStr = "";
+	ctime_s(timeStamp, 26, &end_time);
+	logToFile("System Start: " + timeStampStr.append(timeStamp));
+
+
 	//Variables
 	int menuInput = -1;
 	Tutor *head = NULL;
@@ -14,19 +24,20 @@ int main()
 	int tutorListCount = 0;
 	int currentPage = 1;
 
-	cout << "This is the Tutor Linked List System" << endl;
-	cout << "Login to be implemented..." << endl;
-	cout << "Hit Enter to proceed" << endl;
+	string userRole = "";
+	bool auth = false;
+
+	cout << "Tutor Linked List System: " << timeStamp << endl;
+	cout << "Please login..." << endl;
+	cout << "Login is currently disabled...";
+	/*do {
+		auth = login(&userRole);
+	} while (!auth);*/
+
+	cout << "Welcome, " << userRole << ". Hit Enter to proceed" << endl;
 
 	cin.get();
 
-	//cout << "Main Menu:" << endl;
-	//cout << "1. Display All Tutor" << endl;
-	//cout << "2. Add New Tutor" << endl;
-	//cout << "3. Search by Tutor ID" << endl;
-	//cout << "4. Search by Tutor Rating" << endl;
-	//cout << "5. Exit" << endl;
-	//cout << "Please enter the desired menu option: ";
 
 	do
 	{
@@ -42,7 +53,7 @@ int main()
 			do
 			{
 				displayTutorList(head, tutorListCount, &currentPage);
-				tutorListMenu();
+				tutorListMenu(&userRole);
 				cin >> tutorMenu;
 				tutorMenuControl(&tutorMenu, &head, &tail, &tutorListCount, &currentPage);
 
