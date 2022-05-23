@@ -19,6 +19,7 @@ int main()
 	int size = (sizeof(tutor) / sizeof(tutor[0]));
 	int currentPage = 1;
 
+	cout << "This is the Tutor Array System" << endl;
 	cout << "Login to be implemented..." << endl;
 	cout << "Hit Enter to proceed" << endl;
 

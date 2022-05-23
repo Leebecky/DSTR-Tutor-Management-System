@@ -4,7 +4,7 @@
 #include <ctime>
 #include <chrono>
 using namespace std;
-struct Tutor { //Implementation of Tutor for array
+	struct Tutor { //Implementation of Tutor for array
 
 	//Data Fields
 	int tutorId;
