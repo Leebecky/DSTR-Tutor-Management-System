@@ -56,7 +56,7 @@ void tutorListMenu()
 
 
 //Redirects the user based on given input
-void tutorMenuControl(int* input, Tutor** head, Tutor** tail, int *tutorListCount, int* currentPage, Tutor **pageHead, Tutor **pageTail, string *pageCommand)
+void tutorMenuControl(int* input, Tutor** head, Tutor** tail, int *tutorListCount, int* currentPage)
 {
 	switch (*input)
 	{
@@ -79,11 +79,9 @@ void tutorMenuControl(int* input, Tutor** head, Tutor** tail, int *tutorListCoun
 		cout << "Enter tutor id: " << endl;
 		break;
 	case 6:
-		//(*pageHead) = (*pageTail)->next;
 		*currentPage = *currentPage + 1;
 		break;
-	case 7:
-		//(*pageHead) = (*pageHead)->prev;
+	case 7:		
 		*currentPage = *currentPage - 1;
 		break;
 	default:
@@ -160,11 +158,8 @@ void generateData(Tutor **head, Tutor** tail, int* tutorListCount) {
 	*tutorListCount = 15;
 }
 
-void displayTutorList(Tutor* head, int size, int* currentPage, Tutor  **pageHead, Tutor **pageTail, string *pageCommand) {
-	if (*pageHead == NULL) {
-		(*pageHead) = head;
-	}
-
+void displayTutorList(Tutor* head, int size, int* currentPage) {
+	
 	int currentPosition, maxPosition, maxPage;
 	if (size % 5 != 0) {
 		maxPage = (size / 5) + 1;
@@ -196,10 +191,7 @@ void displayTutorList(Tutor* head, int size, int* currentPage, Tutor  **pageHead
 	cout << "Center Name" << "\t| ";
 	cout << "Rating" << endl;
 
-	//for (int i = currentPosition; i < maxPosition; i++)
-
-	Tutor *temp = (*pageHead);
-	//while (temp != NULL)
+	Tutor *temp = head;
 	for (int i = 0; i < maxPosition; i++)
 	{
 		if (i >= currentPosition) {
@@ -213,10 +205,7 @@ void displayTutorList(Tutor* head, int size, int* currentPage, Tutor  **pageHead
 
 		temp = temp->next;
 
-
 	}
-
-
 
 	cout << "\nPage  " << *currentPage << " / " << maxPage << endl;
 }

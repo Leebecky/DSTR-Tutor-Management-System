@@ -33,14 +33,14 @@ public: //Constructor
 //General Functions
 void mainMenu(); // Main Menu
 void tutorListMenu(); // Main Menu > Display All Tutor
-void tutorMenuControl(int* input, Tutor** head, Tutor** tail, int *count, int* currentPage, Tutor **pageHead, Tutor **pageTail, string *pageCommand); //Tutor List Menu Control
+void tutorMenuControl(int* input, Tutor** head, Tutor** tail, int *count, int* currentPage); //Tutor List Menu Control
 void generateData(Tutor **head, Tutor** tail, int *tutorListCount); // Contains the predefined data
 
 
 //void addTutor(Tutor* head, Tutor* newData); //Adds a new tutor to the list
 //void modifyTutor(Tutor* head, std::string tutorId, std::string data, std::string attribute); //Updates the tutor record
 //bool deleteTutor(Tutor* head, std::string tutorId); //Deletes the selected tutor and returns True/False to indicate success
-void displayTutorList(Tutor* head, int size, int* currentPage, Tutor **pageHead, Tutor **pageTail, string *pageCommand); //Displays the list of all tutors
+void displayTutorList(Tutor* head, int size, int* currentPage); //Displays the list of all tutors
 void sortByTutorId(Tutor **head, Tutor **tail, int *count); //Sort the tutor list by tutor id
 Tutor *getTail(Tutor *cur);
 Tutor* swapNode(Tutor* node1, Tutor* node2);

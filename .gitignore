@@ -36,3 +36,5 @@ Tutor_Management_System/.vs/Tutor_Management_System/v15/.suo
 *.tlog
 *.pdb
 *.ilk
+*.idb
+*.log

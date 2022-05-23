@@ -11,11 +11,8 @@ int main()
 	int menuInput = -1;
 	Tutor *head = NULL;
 	Tutor *tail = NULL;
-	Tutor *pageHead = NULL;
-	Tutor *pageTail = NULL;
 	int tutorListCount = 0;
 	int currentPage = 1;
-	string pageCommand = "";
 
 	cout << "This is the Tutor Linked List System" << endl;
 	cout << "Login to be implemented..." << endl;
@@ -44,10 +41,10 @@ int main()
 			cout << endl;
 			do
 			{
-				displayTutorList(head, tutorListCount, &currentPage, &pageHead, &pageTail, &pageCommand);
+				displayTutorList(head, tutorListCount, &currentPage);
 				tutorListMenu();
 				cin >> tutorMenu;
-				tutorMenuControl(&tutorMenu, &head, &tail, &tutorListCount, &currentPage, &pageHead, &pageTail, &pageCommand);
+				tutorMenuControl(&tutorMenu, &head, &tail, &tutorListCount, &currentPage);
 
 				cout << endl;
 			} while (tutorMenu > 0);
