@@ -7,12 +7,17 @@
 
 int main()
 {
-	//Sample Function Call 
-	//test("test");
-
 	//Variables
 	int menuInput = -1;
+	Tutor *head = NULL;
+	Tutor *tail = NULL;
+	Tutor *pageHead = NULL;
+	Tutor *pageTail = NULL;
+	int tutorListCount = 0;
+	int currentPage = 1;
+	string pageCommand = "";
 
+	cout << "This is the Tutor Linked List System" << endl;
 	cout << "Login to be implemented..." << endl;
 	cout << "Hit Enter to proceed" << endl;
 
@@ -28,6 +33,7 @@ int main()
 
 	do
 	{
+		generateData(&head, &tail, &tutorListCount);
 		mainMenu();
 		cin >> menuInput;
 
@@ -38,9 +44,10 @@ int main()
 			cout << endl;
 			do
 			{
+				displayTutorList(head, tutorListCount, &currentPage, &pageHead, &pageTail, &pageCommand);
 				tutorListMenu();
 				cin >> tutorMenu;
-				tutorMenuControl(&tutorMenu);
+				tutorMenuControl(&tutorMenu, &head, &tail, &tutorListCount, &currentPage, &pageHead, &pageTail, &pageCommand);
 
 				cout << endl;
 			} while (tutorMenu > 0);
