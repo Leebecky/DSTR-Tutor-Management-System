@@ -2,8 +2,12 @@
 
 #include<string>
 #include<ctime>
+#include<chrono>
+#include<fstream> //header file used for file i/o
 
 using namespace std;
+using namespace std::chrono;
+
 struct Tutor { //Implementation of Tutor for linked list
 
 	//Data Fields
@@ -31,11 +35,12 @@ public: //Constructor
 
 
 //General Functions
+bool login(string *userRole);
 void mainMenu(); // Main Menu
-void tutorListMenu(); // Main Menu > Display All Tutor
+void tutorListMenu(string *userRole); // Main Menu > Display All Tutor
 void tutorMenuControl(int* input, Tutor** head, Tutor** tail, int *count, int* currentPage); //Tutor List Menu Control
 void generateData(Tutor **head, Tutor** tail, int *tutorListCount); // Contains the predefined data
-
+void logToFile(string data); // log time taken to file
 
 //void addTutor(Tutor* head, Tutor* newData); //Adds a new tutor to the list
 //void modifyTutor(Tutor* head, std::string tutorId, std::string data, std::string attribute); //Updates the tutor record

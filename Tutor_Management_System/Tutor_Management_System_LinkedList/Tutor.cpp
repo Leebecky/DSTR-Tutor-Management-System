@@ -1,10 +1,46 @@
 #include<string>
 #include<iostream>
 #include<ctime>
-
+#include<fstream> //header file used for file i/o
 #include "Tutor.h"
+#include <chrono>
 
-using namespace std;
+
+//using namespace std::chrono;
+
+//Login Account Credentials
+bool login(string *userRole) {
+	string username, password;
+	cout << "Username: ";
+	getline(cin, username);
+	cout << "Password: ";
+	getline(cin, password);
+
+	if (username == "Admin" && password == "admin123") { //Admin account
+		*userRole = "Admin";
+		return true;
+	}
+	else if (username == "Tutor" && password == "Tutor123") { //Tutor account
+		*userRole = "Tutor";
+		return true;
+	}
+	else {
+		cout << endl << "Error logging in. Please check your credentials and try again!" << endl << endl;
+		return false;
+	}
+
+}
+
+void logToFile(string data) {
+	//ofstream logFile; //file input
+
+	//logFile.open("Tutor System Log - Linked List.txt");
+	std::ofstream logFile("Tutor System Log - Linked List.txt", std::ios_base::app | std::ios_base::out);
+
+	logFile << data << endl;
+	logFile.close();
+}
+
 Tutor::Tutor() {
 
 }
@@ -40,14 +76,18 @@ void mainMenu()
 
 
 //Display the menu when viewing the tutor list
-void tutorListMenu()
+void tutorListMenu(string *userRole)
 {
 	cout << "Tutor List:" << endl;
 	cout << "1. View Tutor" << endl;
 	cout << "2. Sort by Tutor ID" << endl;
 	cout << "3. Sort by Tutor Hourly Pay" << endl;
 	cout << "4. Sort by Tutor Rating" << endl;
-	cout << "5. Delete Tutor" << endl;
+
+	if (*userRole == "Admin") {
+		cout << "5. Delete Tutor" << endl;
+	}
+
 	cout << "6. Next page" << endl;
 	cout << "7. Previous page" << endl;
 	cout << "0. Back to Main Menu" << endl;
@@ -81,7 +121,7 @@ void tutorMenuControl(int* input, Tutor** head, Tutor** tail, int *tutorListCoun
 	case 6:
 		*currentPage = *currentPage + 1;
 		break;
-	case 7:		
+	case 7:
 		*currentPage = *currentPage - 1;
 		break;
 	default:
@@ -159,7 +199,7 @@ void generateData(Tutor **head, Tutor** tail, int* tutorListCount) {
 }
 
 void displayTutorList(Tutor* head, int size, int* currentPage) {
-	
+
 	int currentPosition, maxPosition, maxPage;
 	if (size % 5 != 0) {
 		maxPage = (size / 5) + 1;
@@ -213,6 +253,8 @@ void displayTutorList(Tutor* head, int size, int* currentPage) {
 
 //Bubble Sort - Sort tutor list by Tutor Id
 void sortByTutorId(Tutor **head, Tutor **tail, int *count) {
+	auto startTime = high_resolution_clock::now();
+
 	Tutor **temp = head;
 	bool swapped = false;
 	cout << *count << endl;
@@ -242,6 +284,11 @@ void sortByTutorId(Tutor **head, Tutor **tail, int *count) {
 		}
 	}
 	*tail = getTail(*temp);
+
+	auto endTime = high_resolution_clock::now();
+	auto duration = duration_cast<microseconds>(endTime - startTime);
+	logToFile("Bubble Sort: " + to_string(duration.count()) + " microseconds");
+
 }
 
 //Reference: https://www.geeksforgeeks.org/bubble-sort-for-linked-list-by-swapping-nodes/
@@ -382,14 +429,24 @@ Tutor *quickSortRecur(Tutor *head, Tutor *tail)
 }
 
 void sortByHourlyPay(Tutor** head, Tutor **tail) {
+	auto startTime = high_resolution_clock::now();
 	(*head) = quickSortRecur((*head), (*tail));
 	(*tail) = getTail(*head);
 
+	auto endTime = high_resolution_clock::now();
+	auto duration = duration_cast<microseconds>(endTime - startTime);
+	logToFile("QuickSort: " + to_string(duration.count()) + " microseconds");
 }
 
 void sortByRating(Tutor **head, Tutor **tail) {
+	auto startTime = high_resolution_clock::now();
+	
 	MergeSort(head);
 	*tail = getTail(*head);
+
+	auto endTime = high_resolution_clock::now();
+	auto duration = duration_cast<microseconds>(endTime - startTime);
+	logToFile("Merge Sort: " + to_string(duration.count()) + " microseconds");
 }
 
 Tutor* Merge(Tutor* h1, Tutor* h2)
