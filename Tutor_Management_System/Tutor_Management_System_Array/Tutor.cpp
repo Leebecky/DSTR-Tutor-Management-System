@@ -170,7 +170,7 @@ void displayTutorList(Tutor* head, int size, int* currentPage) {
 
 		dateTerminated = localtime(&(head + i)->dateTerminated);
 
-		if (dateTerminated->tm_year + 1900 == 1970) {
+		if ((head + i)->dateTerminated == 0) {
 			cout << " - " << endl;
 		}
 		else {
@@ -322,4 +322,42 @@ bool deleteTutor(Tutor* head, int low, int size, int tutorId) {
 		return false;
 	}
 
+}
+
+bool modifyTutor(Tutor* head, int low, int size, int tutorId) {
+	int mid, p = 0, high = size;
+	string phone, address;
+
+	cout << "Enter new phone numbers : ";
+	cin >> phone;
+
+	cout << "Enter new address : ";
+	cin >> address;
+
+	while (low <= high) {
+		mid = (low + high) / 2;
+
+		if (tutorId == (head + mid)->tutorId) {
+			cout << "\n\n";
+
+			(head + mid)->phone = phone;
+			(head + mid)->address = address;
+
+			p = 1;
+			return true;
+		}
+		else {
+			if (tutorId < (head + mid)->tutorId) {
+				high = mid - 1;
+			}
+			else {
+				low = mid + 1;
+			}
+		}
+	}
+
+	if (p != 1) {
+		cout << "\n\nTutor info cannot be updated because tutor Id not found." << endl;
+		return false;
+	}
 }

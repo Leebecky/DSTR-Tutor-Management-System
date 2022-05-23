@@ -34,7 +34,7 @@ void tutorListMenu(Tutor* ptr, int* size, int* currentPage); // Main Menu > Disp
 void tutorMenuControl(int* input, Tutor* head, int* size, int* currentPage); //Tutor List Menu Control
 
 void addTutor(Tutor* head, Tutor* newData); //Adds a new tutor to the list
-//void modifyTutor(Tutor* head, string tutorId, string data, string attribute); //Updates the tutor record
+bool modifyTutor(Tutor* head, int low, int size, int tutorId); //Updates the tutor record
 bool deleteTutor(Tutor* head, int low, int size, int tutorId); //Deletes the selected tutor and returns True/False to indicate success
 void displayTutorList(Tutor* head, int size, int* currentPage); //Displays the list of all tutors
 void sortByTutorId(Tutor* head, int size); //Sort the tutor list by tutor id
