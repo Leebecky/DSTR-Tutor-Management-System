@@ -90,16 +90,20 @@ void tutorListMenu(string *userRole)
 }
 
 // View Tutor > Menu
-void tutorMenuOptions() {
+void tutorMenuOptions(string *userRole) {
 	int menuSelection = -1;
-	cout << "1. Modify Phone Number" << endl;
-	cout << "2. Modify Address" << endl;
+	if (*userRole == "Admin") {
+		cout << "1. Modify Address" << endl;
+		cout << "2. Modify Phone Number" << endl;
+	}
+	cout << "3. Next Tutor Record" << endl;
+	cout << "4. Previous Tutor Record" << endl;
 	cout << "0. Back to Display Menu" << endl;
 	cout << "Please enter the desired menu option: ";
 }
 
 //Redirects the user based on given input
-void tutorMenuControl(int* input, Tutor** head, Tutor** tail, int *tutorListCount, int* currentPage)
+void tutorMenuControl(int* input, Tutor** head, Tutor** tail, int *tutorListCount, int* currentPage, string *userRole)
 {
 	int tutorIdSelection = -1, opt = -1;
 	bool  result = false;
@@ -119,14 +123,16 @@ void tutorMenuControl(int* input, Tutor** head, Tutor** tail, int *tutorListCoun
 			goto resetTutorView;
 		}
 
-		cout << endl << "Tutor Details Here" << endl << endl;
-
 		do {
-			//TODO Display Tutor Details	
+			Tutor *data = displayTutorDetails((*head), *tutorListCount, tutorIdSelection);
 
-			tutorMenuOptions();
+			if (!data) {
+				break;
+			}
+
+			tutorMenuOptions(userRole);
 			cin >> opt;
-			tutorMenuControl((*head), *tutorListCount, opt, tutorIdSelection);
+			tutorIdSelection = tutorMenuControl((*head), *tutorListCount, opt, tutorIdSelection);
 		} while (opt > 0);
 		break;
 	case 2:
@@ -175,35 +181,48 @@ void tutorMenuControl(int* input, Tutor** head, Tutor** tail, int *tutorListCoun
 }
 
 // View Tutor > Menu Control
-void tutorMenuControl(Tutor *head, int size, int menuSelection, int tutorId) {
+int tutorMenuControl(Tutor *head, int size, int menuSelection, int tutorId) {
 	string dataValue = "";
 	bool result = false;
 
+	Tutor *data = binarySearchTutorId(head, size, tutorId);
+
+	// if record not found
+	if (!data) {
+		cout << endl << "Tutor cannot be modified because tutor Id not found." << endl << endl;
+		return -1;
+	}
+
 	switch (menuSelection) {
+
 	case 1:
-		cout << "Enter the phone number: ";
-		cin.ignore();
-		getline(cin, dataValue);
-		result = modifyTutor(head, size, tutorId, &dataValue, "Phone");
-
-		if (result) {
-			cout << endl << "Tutor phone number updated" << endl << endl;
-		}
-
-		break;
-	case 2:
 		cout << "Enter the address: ";
 		cin.ignore();
 		getline(cin, dataValue);
-		result = modifyTutor(head, size, tutorId, &dataValue, "Address");
+		result = modifyTutor(data, &dataValue, "Address");
 
 		if (result) {
-			cout << endl << "Tutor address updated" << endl << endl;
+			cout << endl << "Tutor address updated" << endl;
 		}
 
-		break;
+		return data->tutorId;
+	case 2:
+		cout << "Enter the phone number: ";
+		cin.ignore();
+		getline(cin, dataValue);
+		result = modifyTutor(data, &dataValue, "Phone");
+
+		if (result) {
+			cout << endl << "Tutor phone number updated" << endl;
+		}
+
+		return data->tutorId;
+	case 3:
+		return data->next->tutorId;
+	case 4:
+		return data->prev->tutorId;
 	default:
-		break;
+		return data->tutorId;
 	}
 
 }
@@ -342,6 +361,34 @@ void displayTutorList(Tutor* head, int size, int* currentPage) {
 	cout << "\nPage  " << *currentPage << " / " << maxPage << endl;
 }
 
+// Display the details of an individual record
+Tutor *displayTutorDetails(Tutor *head, int size, int tutorId) {
+	Tutor *data = binarySearchTutorId(head, size, tutorId);
+
+	// if record not found
+	if (!data) {
+		cout << endl << "Tutor not found." << endl << endl;
+		return NULL;
+	}
+
+	cout << endl << "=================================================================" << endl;
+	cout << "\t#" << data->tutorId << "\t" << data->name << endl;
+	cout << "=================================================================" << endl;
+	cout << "Address: \t" << data->address << endl;
+	cout << "Phone Number: \t" << data->phone << endl;
+	cout << "Rating: \t" << data->rating << endl;
+	cout << "Hourly Pay Rate: " << data->hourlyPayRate << endl;
+	cout << "Date Joined: \t" << data->dateJoined << endl;
+	cout << "Center Code: \t" << data->centerCode << endl;
+	cout << "Center Name: \t" << data->centerName << endl;
+	cout << "Subject Code: \t" << data->subjectCode << endl;
+	cout << "Subject Name: \t" << data->subjectName << endl;
+	cout << "Date Terminated: " << data->dateTerminated << endl;
+	cout << "=================================================================" << endl << endl;
+
+	return data;
+}
+
 // Delete Tutor - Binary Search
 bool deleteTutor(Tutor** head, Tutor **tail, int size, int tutorId) {
 	//To Delete Linked List Node: 
@@ -391,13 +438,12 @@ bool deleteTutor(Tutor** head, Tutor **tail, int size, int tutorId) {
 
 }
 
-// Modify Tutor - Binary Search
-bool modifyTutor(Tutor *head, int size, int tutorId, string *dataValue, string updateAttribute) {
-	Tutor *data = binarySearchTutorId(head, size, tutorId);
+// Modify Tutor Record
+bool modifyTutor(Tutor *data, string *dataValue, string updateAttribute) {
 
-	// if record not found
-	if (!data) {
-		cout << endl << "Tutor cannot be modified because tutor Id not found." << endl << endl;
+	if (*dataValue == "") {
+
+		cout << endl << "No data provided. " << updateAttribute << " not updated" << endl;
 		return false;
 	}
 
