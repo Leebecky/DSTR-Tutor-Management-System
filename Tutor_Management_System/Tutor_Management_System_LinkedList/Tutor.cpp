@@ -1,10 +1,6 @@
-#include<string>
-#include<iostream>
-#include<ctime>
-#include<fstream> //header file used for file i/o
-#include "Tutor.h"
-#include <chrono>
 
+#include "Tutor.h"
+#pragma warning(disable : 4996)
 
 //using namespace std::chrono;
 
@@ -32,20 +28,18 @@ bool login(string *userRole) {
 }
 
 void logToFile(string data) {
-	//ofstream logFile; //file input
-
-	//logFile.open("Tutor System Log - Linked List.txt");
-	std::ofstream logFile("Tutor System Log - Linked List.txt", std::ios_base::app | std::ios_base::out);
+	ofstream logFile("Tutor System Log - Linked List.txt", ios_base::app | ios_base::out);
 
 	logFile << data << endl;
-	logFile.close();
+
 }
 
 Tutor::Tutor() {
 
 }
 
-Tutor::Tutor(int tutorId, string name, tm dateJoined, double hourlyPayRate, string phone, string address, int centerCode, string centerName, int subjectCode, string subjectName, int rating)  //Base Constructor
+//Base Constructor
+Tutor::Tutor(int tutorId, string name, time_t dateJoined, double hourlyPayRate, string phone, string address, int centerCode, string centerName, int subjectCode, string subjectName, int rating, time_t dateTerminated)
 {
 	this->tutorId = tutorId;
 	this->name = name;
@@ -58,6 +52,7 @@ Tutor::Tutor(int tutorId, string name, tm dateJoined, double hourlyPayRate, stri
 	this->subjectCode = subjectCode;
 	this->subjectName = subjectName;
 	this->rating = rating;
+	this->dateTerminated = dateTerminated;
 
 }
 
@@ -98,6 +93,9 @@ void tutorListMenu(string *userRole)
 //Redirects the user based on given input
 void tutorMenuControl(int* input, Tutor** head, Tutor** tail, int *tutorListCount, int* currentPage)
 {
+	int deleteTutorId = -1;
+	bool  result = false;
+
 	switch (*input)
 	{
 	case 1:
@@ -116,7 +114,16 @@ void tutorMenuControl(int* input, Tutor** head, Tutor** tail, int *tutorListCoun
 		sortByRating(head, tail);
 		break;
 	case 5:
-		cout << "Enter tutor id: " << endl;
+
+		cout << "Enter tutor id: ";
+		cin >> deleteTutorId;
+		sortByTutorId(head, tail, tutorListCount);
+		result = deleteTutor(head, tail, *tutorListCount, deleteTutorId);
+
+		if (result) {
+			*tutorListCount = *tutorListCount - 1;
+			cout << endl << "Tutor record has been deleted." << endl;
+		}
 		break;
 	case 6:
 		*currentPage = *currentPage + 1;
@@ -132,21 +139,26 @@ void tutorMenuControl(int* input, Tutor** head, Tutor** tail, int *tutorListCoun
 
 
 void generateData(Tutor **head, Tutor** tail, int* tutorListCount) {
-	Tutor *data1 = new Tutor(1, "Zainul bin Zabidin", tm(), 75.00, "011-1234567", "19, Jalan A12, Taman Asia, 68000 Ampang, Selangor", 1, "Pusat Asia Jaya", 1, "Bahasa Melayu", 3);
-	Tutor *data2 = new Tutor(2, "Alina Chan Mei Yi", tm(), 80.00, "016-5423412", "22, Jalan B1, Taman Bestari, 68000 Ampang, Selangor", 1, "Pusat Asia Jaya", 5, "Biology", 5);
-	Tutor *data3 = new Tutor(3, "Dhanyasree a/p Muthusamy", tm(), 60.00, "017-3415136", "A12, Block-C, Oakleaf Condominium, 51000 Kuala Lumpur", 1, "Pusat Asia Jaya", 2, "English", 1);
-	Tutor *data4 = new Tutor(4, "Cassim Tan", tm(), 75.00, "016-1237568", "97, Jalan ST1, Taman Stadhuys, 68000 Ampang, Selangor", 1, "Pusat Asia Jaya", 3, "Sejarah", 3);
-	Tutor *data5 = new Tutor(5, "Nurul Syafiqah", tm(), 65.00, "011-845656455", "65, Jalan M1, Taman Mega, 68000 Ampang, Selangor", 1, "Pusat Asia Jaya", 4, "Geografi", 2);
-	Tutor *data6 = new Tutor(6, "Maggie Simon", tm(), 50.00, "011-57457823", "11, Jalan M1, Taman Mega, 68000 Ampang, Selangor", 2, "Pusat Megah Jaya", 9, "Mathematics", 2);
-	Tutor *data7 = new Tutor(7, "Ai Ling Tan", tm(), 75.00, "015-123434656", "65, Jalan M1, Taman Mega, 68000 Ampang, Selangor", 2, "Pusat Megah Jaya", 10, "Additional Mathematics", 5);
-	Tutor *data8 = new Tutor(8, "Diviya Nathan", tm(), 50.00, "011-958567555", "561, Jalan Sinar 1, Taman Sinar, 68000 Ampang, Selangor", 2, "Pusat Megah Jaya", 2, "English", 1);
-	Tutor *data9 = new Tutor(9, "Daryl Arul", tm(), 75.00, "016-98653544", "17, Jalan M2, Taman Mega, 68000 Ampang, Selangor", 2, "Pusat Megah Jaya", 8, "Chemistry", 2);
-	Tutor *data10 = new Tutor(10, "Suhaimi bin Suhakam", tm(), 55.00, "011-845656455", "65, Jalan M1, Taman Mega, 68000 Ampang, Selangor", 2, "Pusat Megah Jaya", 7, "Physics", 5);
-	Tutor *data11 = new Tutor(11, "Paula Maruice", tm(), 60.00, "016-45452777", "67, Jalan Bkt Utama, Taman Bukit, 68000 Ampang, Selangor", 3, "Pusat Suru Jaya", 4, "Geografi", 4);
-	Tutor *data12 = new Tutor(12, "Chan Mei Kong", tm(), 55.00, "012-24562453", "7-A-1, Emerald Condominium, 68000 Ampang, Selangor", 3, "Pusat Suru Jaya", 5, "Biology", 4);
-	Tutor *data13 = new Tutor(13, "Cassi Hassan", tm(), 80.00, "016-756455554", "97, Jalan Bendara, Taman Antarabangsa, 68000 Ampang, Selangor", 3, "Pusat Suru Jaya", 8, "Chemistry", 5);
-	Tutor *data14 = new Tutor(14, "Nurul Aslina", tm(), 50.00, "011-673334s76", "65, Jalan M3, Taman Mega, 68000 Ampang, Selangor", 3, "Pusat Suru Jaya", 1, "Bahasa Melayu", 3);
-	Tutor *data15 = new Tutor(15, "Li Su Yan", tm(), 78.50, "018-88345346", "99, Jalan B1, Taman Bestari, 68000 Ampang, Selangor", 3, "Pusat Suru Jaya", 10, "Additioanl Mathematics", 4);
+
+	time_t dateJoined = time(NULL) - 31536000;
+	time_t withinMonths = time(NULL) - 2592000;
+	time_t outsideMonths = time(NULL) - 17280000;
+
+	Tutor *data1 = new Tutor(1, "Zainul bin Zabidin", dateJoined, 75.00, "011-1234567", "19, Jalan A12, Taman Asia, 68000 Ampang, Selangor", 1, "Pusat Asia Jaya", 1, "Bahasa Melayu", 3, outsideMonths);
+	Tutor *data2 = new Tutor(2, "Alina Chan Mei Yi", dateJoined, 80.00, "016-5423412", "22, Jalan B1, Taman Bestari, 68000 Ampang, Selangor", 1, "Pusat Asia Jaya", 5, "Biology", 5, 0);
+	Tutor *data3 = new Tutor(3, "Dhanyasree a/p Muthusamy", dateJoined, 60.00, "017-3415136", "A12, Block-C, Oakleaf Condominium, 51000 Kuala Lumpur", 1, "Pusat Asia Jaya", 2, "English", 1, outsideMonths);
+	Tutor *data4 = new Tutor(4, "Cassim Tan", dateJoined, 75.00, "016-1237568", "97, Jalan ST1, Taman Stadhuys, 68000 Ampang, Selangor", 1, "Pusat Asia Jaya", 3, "Sejarah", 3, 0);
+	Tutor *data5 = new Tutor(5, "Nurul Syafiqah", dateJoined, 65.00, "011-845656455", "65, Jalan M1, Taman Mega, 68000 Ampang, Selangor", 1, "Pusat Asia Jaya", 4, "Geografi", 2, outsideMonths);
+	Tutor *data6 = new Tutor(6, "Maggie Simon", dateJoined, 50.00, "011-57457823", "11, Jalan M1, Taman Mega, 68000 Ampang, Selangor", 2, "Pusat Megah Jaya", 9, "Mathematics", 2, withinMonths);
+	Tutor *data7 = new Tutor(7, "Ai Ling Tan", dateJoined, 75.00, "015-123434656", "65, Jalan M1, Taman Mega, 68000 Ampang, Selangor", 2, "Pusat Megah Jaya", 10, "Additional Mathematics", 5, 0);
+	Tutor *data8 = new Tutor(8, "Diviya Nathan", dateJoined, 50.00, "011-958567555", "561, Jalan Sinar 1, Taman Sinar, 68000 Ampang, Selangor", 2, "Pusat Megah Jaya", 2, "English", 1, outsideMonths);
+	Tutor *data9 = new Tutor(9, "Daryl Arul", dateJoined, 75.00, "016-98653544", "17, Jalan M2, Taman Mega, 68000 Ampang, Selangor", 2, "Pusat Megah Jaya", 8, "Chemistry", 2, 0);
+	Tutor *data10 = new Tutor(10, "Suhaimi bin Suhakam", dateJoined, 55.00, "011-845656455", "65, Jalan M1, Taman Mega, 68000 Ampang, Selangor", 2, "Pusat Megah Jaya", 7, "Physics", 5, 0);
+	Tutor *data11 = new Tutor(11, "Paula Maruice", dateJoined, 60.00, "016-45452777", "67, Jalan Bkt Utama, Taman Bukit, 68000 Ampang, Selangor", 3, "Pusat Suru Jaya", 4, "Geografi", 4, withinMonths);
+	Tutor *data12 = new Tutor(12, "Chan Mei Kong", dateJoined, 55.00, "012-24562453", "7-A-1, Emerald Condominium, 68000 Ampang, Selangor", 3, "Pusat Suru Jaya", 5, "Biology", 4, 0);
+	Tutor *data13 = new Tutor(13, "Cassi Hassan", dateJoined, 80.00, "016-756455554", "97, Jalan Bendara, Taman Antarabangsa, 68000 Ampang, Selangor", 3, "Pusat Suru Jaya", 8, "Chemistry", 5, 0);
+	Tutor *data14 = new Tutor(14, "Nurul Aslina", dateJoined, 50.00, "011-673334s76", "65, Jalan M3, Taman Mega, 68000 Ampang, Selangor", 3, "Pusat Suru Jaya", 1, "Bahasa Melayu", 3, outsideMonths);
+	Tutor *data15 = new Tutor(15, "Li Su Yan", dateJoined, 78.50, "018-88345346", "99, Jalan B1, Taman Bestari, 68000 Ampang, Selangor", 3, "Pusat Suru Jaya", 10, "Additioanl Mathematics", 4, outsideMonths);
 
 	data1->next = data2;
 	data1->prev = NULL;
@@ -199,7 +211,7 @@ void generateData(Tutor **head, Tutor** tail, int* tutorListCount) {
 }
 
 void displayTutorList(Tutor* head, int size, int* currentPage) {
-
+	tm* dateTerminated;
 	int currentPosition, maxPosition, maxPage;
 	if (size % 5 != 0) {
 		maxPage = (size / 5) + 1;
@@ -229,7 +241,9 @@ void displayTutorList(Tutor* head, int size, int* currentPage) {
 	cout << "Pay Rate" << "\t| ";
 	cout << "Center Code" << "\t| ";
 	cout << "Center Name" << "\t| ";
-	cout << "Rating" << endl;
+	cout << "Rating" << "\t| ";
+	//cout << "Date Joined" << "\t| ";
+	cout << "Date Terminated" << endl;
 
 	Tutor *temp = head;
 	for (int i = 0; i < maxPosition; i++)
@@ -241,6 +255,14 @@ void displayTutorList(Tutor* head, int size, int* currentPage) {
 			cout << (temp)->centerCode << "\t\t| ";
 			cout << (temp)->centerName << "\t\t| ";
 			cout << (temp)->rating << endl;
+
+			dateTerminated = localtime(&(temp)->dateTerminated);
+			if (dateTerminated->tm_year + 1900 == 1970) {
+				cout << " - " << endl;
+			}
+			else {
+				cout << dateTerminated->tm_year + 1900 << "-" << dateTerminated->tm_mon + 1 << "-" << dateTerminated->tm_mday << endl;
+			}
 		}
 
 		temp = temp->next;
@@ -251,13 +273,65 @@ void displayTutorList(Tutor* head, int size, int* currentPage) {
 }
 
 
+
+// Delete Tutor - Binary Search
+bool deleteTutor(Tutor** head, Tutor **tail, int size, int tutorId) {
+	//To Delete Linked List Node: 
+		// 1. Unhook the node
+		// 2. Delete [node]
+
+	time_t today = time(NULL);
+	Tutor *data = binarySearchTutorId((*head), size, tutorId);
+
+
+	// if record not found
+	if (!data) {
+		cout << endl << "Tutor cannot be deleted because tutor Id not found." << endl << endl;
+		return false;
+	}
+
+	if (data->tutorId == tutorId) {
+		// Verify termination date
+		if (data->dateTerminated == 0) { // Not Terminated
+			cout << endl << "Tutor cannot be deleted because tutor is not terminated." << endl << endl;
+			return false;
+		}
+		else if (today - data->dateTerminated < 15552000) {
+			// <6 months
+			cout << endl << "Tutor cannot be deleted because terminated date is less than 6 months." << endl << endl;
+			return false;
+		}
+		else { // Tutor can be deleted
+
+			if (data == (*head)) {
+				(*head) = data->next;
+				(*head)->prev = NULL;
+			}
+			else if (data == (*tail)) {
+				(*tail) = data->prev;
+				(*tail)->next = NULL;
+			}
+			else {
+				(data->prev)->next = data->next;
+				(data->next)->prev = data->prev;
+			}
+
+			delete data;
+			
+			return true;
+		}
+	}
+
+}
+
+
 //Bubble Sort - Sort tutor list by Tutor Id
 void sortByTutorId(Tutor **head, Tutor **tail, int *count) {
 	auto startTime = high_resolution_clock::now();
 
 	Tutor **temp = head;
 	bool swapped = false;
-	cout << *count << endl;
+
 	for (int i = 0; i < *count; i++) {
 		temp = head;
 		swapped = false;
@@ -291,6 +365,83 @@ void sortByTutorId(Tutor **head, Tutor **tail, int *count) {
 
 }
 
+// Quicksort - Sort by Hourly Pay
+void sortByHourlyPay(Tutor** head, Tutor **tail) {
+	auto startTime = high_resolution_clock::now();
+	(*head) = quickSortRecur((*head), (*tail));
+	(*tail) = getTail(*head);
+
+	auto endTime = high_resolution_clock::now();
+	auto duration = duration_cast<microseconds>(endTime - startTime);
+	logToFile("QuickSort: " + to_string(duration.count()) + " microseconds");
+}
+
+// Merge Sort - Sort by Tutor Rating
+void sortByRating(Tutor **head, Tutor **tail) {
+	auto startTime = high_resolution_clock::now();
+
+	MergeSort(head);
+	*tail = getTail(*head);
+
+	auto endTime = high_resolution_clock::now();
+	auto duration = duration_cast<microseconds>(endTime - startTime);
+	logToFile("Merge Sort: " + to_string(duration.count()) + " microseconds");
+}
+
+/*
+===========================================================================
+UTILITY FUNCTIONS FOR SORTING/BINARY SEARCH
+===========================================================================
+*/
+
+// Binary Search
+Tutor *binarySearchTutorId(Tutor* head, int size, int tutorId) {
+	int low = 1, mid, high = size;
+
+	Tutor *temp = head;
+
+	while (low <= high) {
+		mid = (low + high) / 2;
+
+		// Find Tutor in the middle of list
+		Tutor *midTutor = findMid(temp, low, mid);
+
+		// Evaluate if record = tutorId
+		if (midTutor->tutorId == tutorId) {
+			return midTutor;
+		}
+		else {
+			if (tutorId < midTutor->tutorId) {
+				high = mid - 1;
+			}
+			else {
+				low = mid + 1;
+				temp = midTutor->next;
+			}
+		}
+	}
+
+	return NULL;
+}
+
+// Find the Middle element in the list - for Binary Search
+Tutor* findMid(Tutor *head, int index, int mid) {
+
+	if (index == mid) {
+		return head;
+	}
+
+	// Search from Head
+	for (Tutor *i = head; i->next != NULL; i = i->next) {
+
+		if (index == mid) {
+			return i;
+		}
+		index++;
+	}
+	return NULL;
+}
+
 //Reference: https://www.geeksforgeeks.org/bubble-sort-for-linked-list-by-swapping-nodes/
 // Swap the nodes in the linked list
 Tutor* swapNode(Tutor *node1, Tutor *node2) {
@@ -312,8 +463,6 @@ Tutor* swapNode(Tutor *node1, Tutor *node2) {
 	return node2;
 }
 
-//Reference: https://www.geeksforgeeks.org/quicksort-for-linked-list/
-
 // Returns the last node of the list
 Tutor *getTail(Tutor *cur)
 {
@@ -324,15 +473,14 @@ Tutor *getTail(Tutor *cur)
 	return cur;
 }
 
-// Partitions the list taking the last element as the pivot
+// Partitions the list then return the pivot
 Tutor *partition(Tutor *head, Tutor *tail, Tutor **newHead, Tutor **newEnd)
 {
 	Tutor *pivot = tail;
 	Tutor  *current = head, *listEnd = pivot;
 	Tutor *prev = NULL;
 
-	// During partition, both the head and end of the list might change
-	// which is updated in the newHead and newEnd variables
+
 	while (current != pivot)
 	{
 		if (current->hourlyPayRate < pivot->hourlyPayRate)
@@ -342,7 +490,6 @@ Tutor *partition(Tutor *head, Tutor *tail, Tutor **newHead, Tutor **newEnd)
 			if ((*newHead) == NULL) {
 				(*newHead) = current;
 			}
-
 
 			prev = current;
 			current = current->next;
@@ -355,10 +502,6 @@ Tutor *partition(Tutor *head, Tutor *tail, Tutor **newHead, Tutor **newEnd)
 				prev->next = current->next;
 			}
 
-			////if (current->prev != NULL) {
-			////	(current->prev)->next = current->next;
-			//}
-
 			Tutor *tmp = current->next;
 			tmp->prev = current->prev;
 			current->next = NULL;
@@ -367,11 +510,6 @@ Tutor *partition(Tutor *head, Tutor *tail, Tutor **newHead, Tutor **newEnd)
 			listEnd = current;
 			current = tmp;
 
-			//Tutor *tmp = current->next;
-			//current->next = NULL;
-			//listEnd->next = current;
-			//listEnd = current;
-			//current = tmp;
 		}
 	}
 
@@ -381,11 +519,9 @@ Tutor *partition(Tutor *head, Tutor *tail, Tutor **newHead, Tutor **newEnd)
 		(*newHead) = pivot;
 	}
 
-
 	// Update newEnd to the current last node
 	(*newEnd) = listEnd;
 
-	// Return the pivot Tutor
 	return pivot;
 }
 
@@ -409,9 +545,11 @@ Tutor *quickSortRecur(Tutor *head, Tutor *tail)
 	if (newHead != pivot)
 	{
 		// Set the Tutor before the pivot Tutor as NULL
-		Tutor *tmp = newHead;
+		/*Tutor *tmp = newHead;
 		while (tmp->next != pivot)
 			tmp = tmp->next;
+		*/
+		Tutor *tmp = pivot->prev;
 		tmp->next = NULL;
 
 		// Recur for the list before pivot
@@ -428,26 +566,7 @@ Tutor *quickSortRecur(Tutor *head, Tutor *tail)
 	return newHead;
 }
 
-void sortByHourlyPay(Tutor** head, Tutor **tail) {
-	auto startTime = high_resolution_clock::now();
-	(*head) = quickSortRecur((*head), (*tail));
-	(*tail) = getTail(*head);
 
-	auto endTime = high_resolution_clock::now();
-	auto duration = duration_cast<microseconds>(endTime - startTime);
-	logToFile("QuickSort: " + to_string(duration.count()) + " microseconds");
-}
-
-void sortByRating(Tutor **head, Tutor **tail) {
-	auto startTime = high_resolution_clock::now();
-	
-	MergeSort(head);
-	*tail = getTail(*head);
-
-	auto endTime = high_resolution_clock::now();
-	auto duration = duration_cast<microseconds>(endTime - startTime);
-	logToFile("Merge Sort: " + to_string(duration.count()) + " microseconds");
-}
 
 Tutor* Merge(Tutor* h1, Tutor* h2)
 {
@@ -554,3 +673,4 @@ void MergeSort(Tutor **head)
 	// Merge the both lists into a single list.      
 	*head = Merge(first, second);
 }
+
