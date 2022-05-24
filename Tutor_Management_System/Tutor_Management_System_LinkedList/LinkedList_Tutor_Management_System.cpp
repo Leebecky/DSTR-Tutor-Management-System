@@ -71,7 +71,7 @@ int main()
 					goto resetDisplayMenu;
 				}
 
-				tutorMenuControl(&tutorMenu, &head, &tail, &tutorListCount, &currentPage);
+				tutorMenuControl(&tutorMenu, &head, &tail, &tutorListCount, &currentPage, &userRole);
 
 
 
