@@ -60,7 +60,7 @@ Tutor::Tutor(int tutorId, string name, time_t dateJoined, double hourlyPayRate, 
 //Display the main menu
 void mainMenu()
 {
-	cout << "Main Menu:" << endl;
+	cout << endl << "Main Menu:" << endl;
 	cout << "1. Display All Tutor" << endl;
 	cout << "2. Add New Tutor" << endl;
 	cout << "3. Search by Tutor ID" << endl;
@@ -89,17 +89,45 @@ void tutorListMenu(string *userRole)
 	cout << "Please enter the desired menu option: ";
 }
 
+// View Tutor > Menu
+void tutorMenuOptions() {
+	int menuSelection = -1;
+	cout << "1. Modify Phone Number" << endl;
+	cout << "2. Modify Address" << endl;
+	cout << "0. Back to Display Menu" << endl;
+	cout << "Please enter the desired menu option: ";
+}
 
 //Redirects the user based on given input
 void tutorMenuControl(int* input, Tutor** head, Tutor** tail, int *tutorListCount, int* currentPage)
 {
-	int deleteTutorId = -1;
+	int tutorIdSelection = -1, opt = -1;
 	bool  result = false;
 
 	switch (*input)
 	{
 	case 1:
-		cout << "Tutor Details Here" << endl;
+	resetTutorView:
+		cout << "Enter tutor id: ";
+		cin >> tutorIdSelection;
+
+		// Input validation
+		if (cin.fail()) {
+			cin.clear();
+			cin.ignore(numeric_limits<streamsize>::max(), '\n');
+			cout << "Invalid input. Please provide a valid id" << endl;
+			goto resetTutorView;
+		}
+
+		cout << endl << "Tutor Details Here" << endl << endl;
+
+		do {
+			//TODO Display Tutor Details	
+
+			tutorMenuOptions();
+			cin >> opt;
+			tutorMenuControl((*head), *tutorListCount, opt, tutorIdSelection);
+		} while (opt > 0);
 		break;
 	case 2:
 		cout << "Sort by Tutor Id" << endl;
@@ -114,11 +142,20 @@ void tutorMenuControl(int* input, Tutor** head, Tutor** tail, int *tutorListCoun
 		sortByRating(head, tail);
 		break;
 	case 5:
-
+	resetInput:
 		cout << "Enter tutor id: ";
-		cin >> deleteTutorId;
+		cin >> tutorIdSelection;
+
+		// Input validation
+		if (cin.fail()) {
+			cin.clear();
+			cin.ignore(numeric_limits<streamsize>::max(), '\n');
+			cout << "Invalid input. Please provide a valid id" << endl;
+			goto resetInput;
+		}
+
 		sortByTutorId(head, tail, tutorListCount);
-		result = deleteTutor(head, tail, *tutorListCount, deleteTutorId);
+		result = deleteTutor(head, tail, *tutorListCount, tutorIdSelection);
 
 		if (result) {
 			*tutorListCount = *tutorListCount - 1;
@@ -137,6 +174,39 @@ void tutorMenuControl(int* input, Tutor** head, Tutor** tail, int *tutorListCoun
 
 }
 
+// View Tutor > Menu Control
+void tutorMenuControl(Tutor *head, int size, int menuSelection, int tutorId) {
+	string dataValue = "";
+	bool result = false;
+
+	switch (menuSelection) {
+	case 1:
+		cout << "Enter the phone number: ";
+		cin.ignore();
+		getline(cin, dataValue);
+		result = modifyTutor(head, size, tutorId, &dataValue, "Phone");
+
+		if (result) {
+			cout << endl << "Tutor phone number updated" << endl << endl;
+		}
+
+		break;
+	case 2:
+		cout << "Enter the address: ";
+		cin.ignore();
+		getline(cin, dataValue);
+		result = modifyTutor(head, size, tutorId, &dataValue, "Address");
+
+		if (result) {
+			cout << endl << "Tutor address updated" << endl << endl;
+		}
+
+		break;
+	default:
+		break;
+	}
+
+}
 
 void generateData(Tutor **head, Tutor** tail, int* tutorListCount) {
 
@@ -272,8 +342,6 @@ void displayTutorList(Tutor* head, int size, int* currentPage) {
 	cout << "\nPage  " << *currentPage << " / " << maxPage << endl;
 }
 
-
-
 // Delete Tutor - Binary Search
 bool deleteTutor(Tutor** head, Tutor **tail, int size, int tutorId) {
 	//To Delete Linked List Node: 
@@ -282,7 +350,6 @@ bool deleteTutor(Tutor** head, Tutor **tail, int size, int tutorId) {
 
 	time_t today = time(NULL);
 	Tutor *data = binarySearchTutorId((*head), size, tutorId);
-
 
 	// if record not found
 	if (!data) {
@@ -317,13 +384,32 @@ bool deleteTutor(Tutor** head, Tutor **tail, int size, int tutorId) {
 			}
 
 			delete data;
-			
+
 			return true;
 		}
 	}
 
 }
 
+// Modify Tutor - Binary Search
+bool modifyTutor(Tutor *head, int size, int tutorId, string *dataValue, string updateAttribute) {
+	Tutor *data = binarySearchTutorId(head, size, tutorId);
+
+	// if record not found
+	if (!data) {
+		cout << endl << "Tutor cannot be modified because tutor Id not found." << endl << endl;
+		return false;
+	}
+
+	if (updateAttribute == "Phone") {
+		data->phone = *dataValue;
+	}
+	else {
+		data->address = *dataValue;
+	}
+
+	return true;
+}
 
 //Bubble Sort - Sort tutor list by Tutor Id
 void sortByTutorId(Tutor **head, Tutor **tail, int *count) {

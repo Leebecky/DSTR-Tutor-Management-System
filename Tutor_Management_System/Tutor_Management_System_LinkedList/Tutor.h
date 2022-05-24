@@ -48,11 +48,16 @@ void generateData(Tutor **head, Tutor** tail, int *tutorListCount); // Contains 
 void logToFile(string data); // log time taken to file
 Tutor* findMid(Tutor *head, int index, int mid);
 
+void tutorMenuOptions();
+void tutorMenuControl(Tutor *head, int size, int menuSelection, int tutorId);
+
 void displayTutorList(Tutor* head, int size, int* currentPage); //Displays the list of all tutors
 
 //void addTutor(Tutor* head, Tutor* newData); //Adds a new tutor to the list
-//void modifyTutor(Tutor* head, std::string tutorId, std::string data, std::string attribute); //Updates the tutor record
+bool modifyTutor(Tutor *head, int size, int tutorId, string *dataValue, string updateAttribute); //Updates the tutor record
 bool deleteTutor(Tutor** head, Tutor  **tail, int size, int tutorId); //Deletes the selected tutor and returns True/False to indicate success
+
+
 
 /*
 ===========================================================

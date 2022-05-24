@@ -15,7 +15,7 @@ int main()
 
 
 	//Variables
-	int menuInput = -1;
+	int menuInput = 1;
 	Tutor *head = NULL;
 	Tutor *tail = NULL;
 	int tutorListCount = 0;
@@ -38,21 +38,42 @@ int main()
 
 	do
 	{
+	menuReset:
 		generateData(&head, &tail, &tutorListCount);
 		mainMenu();
 		cin >> menuInput;
+
+		// Input validation
+		if (cin.fail()) {
+			cin.clear();
+			cin.ignore(numeric_limits<streamsize>::max(), '\n');
+			cout << endl << "Invalid input. Please provide a valid id"  << endl;
+			goto menuReset;
+		}
 
 		int tutorMenu = -1;
 		switch (menuInput)
 		{
 		case 1:
+		resetDisplayMenu:
 			cout << endl;
 			do
 			{
 				displayTutorList(head, tutorListCount, &currentPage);
 				tutorListMenu(&userRole);
 				cin >> tutorMenu;
+
+				// Input validation
+				if (cin.fail()) {
+					cin.clear();
+					cin.ignore(numeric_limits<streamsize>::max(), '\n');
+					cout << endl << "Invalid input. Please provide a valid id" << endl;
+					goto resetDisplayMenu;
+				}
+
 				tutorMenuControl(&tutorMenu, &head, &tail, &tutorListCount, &currentPage);
+
+
 
 				cout << endl;
 			} while (tutorMenu > 0);
