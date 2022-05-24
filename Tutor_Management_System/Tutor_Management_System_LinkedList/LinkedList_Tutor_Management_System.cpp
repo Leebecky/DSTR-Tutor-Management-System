@@ -1,20 +1,17 @@
 // Tutor_Management_System_LinkedList.cpp : This file contains the 'main' function. Program execution begins and ends there.
 //
 
-#include <iostream>
-#include <chrono>
-
 #include "Tutor.h"
 
 
 int main()
 {
 	// Logging start up time
-	std::time_t end_time = std::chrono::system_clock::to_time_t(std::chrono::system_clock::now());
+	time_t end_time = system_clock::to_time_t(system_clock::now());
 	char timeStamp[26] = {};
 	string timeStampStr = "";
 	ctime_s(timeStamp, 26, &end_time);
-	logToFile("System Start: " + timeStampStr.append(timeStamp));
+	logToFile("\nSystem Start: " + timeStampStr.append(timeStamp));
 
 
 	//Variables
@@ -24,7 +21,7 @@ int main()
 	int tutorListCount = 0;
 	int currentPage = 1;
 
-	string userRole = "";
+	string userRole = "Admin";
 	bool auth = false;
 
 	cout << "Tutor Linked List System: " << timeStamp << endl;
