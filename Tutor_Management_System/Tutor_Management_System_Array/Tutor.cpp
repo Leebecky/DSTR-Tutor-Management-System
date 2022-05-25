@@ -376,13 +376,20 @@ void addTutor(Tutor * head, Tutor * newData)
 // Bubble Sort
 void sortByTutorId(Tutor* head, int size) {
 	for (int i = 0; i < size - 1; i++) {
+		bool swapped = false;
 		for (int j = i + 1; j < size; j++) {
 			if ((head + i)->tutorId > (head + j)->tutorId) {
 
 				Tutor temp = head[i];
 				head[i] = head[j];
 				head[j] = temp;
+				swapped = true;
 			}
+		}
+
+		//Break the outer loop if no swap happens
+		if (!swapped) {
+			break;
 		}
 	}
 
@@ -392,7 +399,7 @@ void sortByTutorId(Tutor* head, int size) {
 void sortByHourlyPay(Tutor* head, int low, int high) {
 	if (low < high)
 	{
-		int pivot = (head + high)->hourlyPayRate;    
+		int pivot = (head + high)->hourlyPayRate;
 		int i = (low - 1);
 
 		for (int j = low; j <= high - 1; j++)

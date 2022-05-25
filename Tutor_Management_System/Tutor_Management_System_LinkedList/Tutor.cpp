@@ -12,12 +12,12 @@ bool login(string *userRole) {
 	cout << "Password: ";
 	getline(cin, password);
 
-	if (username == "Admin" && password == "admin123") { //Admin account
+	if (username == "Admin" && password == "Admin123") { //Admin account
 		*userRole = "Admin";
 		return true;
 	}
-	else if (username == "Tutor" && password == "Tutor123") { //Tutor account
-		*userRole = "Tutor";
+	else if (username == "Hr" && password == "Hr123") { //HR account
+		*userRole = "HR";
 		return true;
 	}
 	else {
@@ -79,7 +79,7 @@ void tutorListMenu(string *userRole)
 	cout << "3. Sort by Tutor Hourly Pay" << endl;
 	cout << "4. Sort by Tutor Rating" << endl;
 
-	if (*userRole == "Admin") {
+	if (*userRole == "HR") {
 		cout << "5. Delete Tutor" << endl;
 	}
 
@@ -92,7 +92,7 @@ void tutorListMenu(string *userRole)
 // View Tutor > Menu
 void tutorMenuOptions(string *userRole) {
 	int menuSelection = -1;
-	if (*userRole == "Admin") {
+	if (*userRole == "HR") {
 		cout << "1. Modify Address" << endl;
 		cout << "2. Modify Phone Number" << endl;
 	}
@@ -103,7 +103,7 @@ void tutorMenuOptions(string *userRole) {
 }
 
 //Redirects the user based on given input
-void tutorMenuControl(int* input, Tutor** head, Tutor** tail, int *tutorListCount, int* currentPage, string *userRole)
+void tutorListMenuControl(int* input, Tutor** head, Tutor** tail, int *tutorListCount, int* currentPage, string *userRole)
 {
 	int tutorIdSelection = -1, opt = -1;
 	bool  result = false;
@@ -132,7 +132,7 @@ void tutorMenuControl(int* input, Tutor** head, Tutor** tail, int *tutorListCoun
 
 			tutorMenuOptions(userRole);
 			cin >> opt;
-			tutorIdSelection = tutorMenuControl((*head), *tutorListCount, opt, tutorIdSelection);
+			tutorIdSelection = tutorMenuControl((*head), (*tail), *tutorListCount, opt, tutorIdSelection);
 		} while (opt > 0);
 		break;
 	case 2:
@@ -181,7 +181,7 @@ void tutorMenuControl(int* input, Tutor** head, Tutor** tail, int *tutorListCoun
 }
 
 // View Tutor > Menu Control
-int tutorMenuControl(Tutor *head, int size, int menuSelection, int tutorId) {
+int tutorMenuControl(Tutor *head, Tutor *tail, int size, int menuSelection, int tutorId) {
 	string dataValue = "";
 	bool result = false;
 
@@ -218,8 +218,14 @@ int tutorMenuControl(Tutor *head, int size, int menuSelection, int tutorId) {
 
 		return data->tutorId;
 	case 3:
+		if (data->next == NULL) { // if end of list, skip back to front
+			return head->tutorId;
+		}
 		return data->next->tutorId;
 	case 4:
+		if (data->prev == NULL) { // If start of list, skip to end
+			return tail->tutorId;
+		}
 		return data->prev->tutorId;
 	default:
 		return data->tutorId;
@@ -364,7 +370,7 @@ void displayTutorList(Tutor* head, int size, int* currentPage) {
 // Display the details of an individual record
 Tutor *displayTutorDetails(Tutor *head, int size, int tutorId) {
 	Tutor *data = binarySearchTutorId(head, size, tutorId);
-
+	tm* dateTerminated;
 	// if record not found
 	if (!data) {
 		cout << endl << "Tutor not found." << endl << endl;
@@ -383,7 +389,16 @@ Tutor *displayTutorDetails(Tutor *head, int size, int tutorId) {
 	cout << "Center Name: \t" << data->centerName << endl;
 	cout << "Subject Code: \t" << data->subjectCode << endl;
 	cout << "Subject Name: \t" << data->subjectName << endl;
-	cout << "Date Terminated: " << data->dateTerminated << endl;
+	//cout << "Date Terminated: " << data->dateTerminated << endl;
+
+	dateTerminated = localtime(&(data)->dateTerminated);
+	if (dateTerminated->tm_year + 1900 == 1970) {
+		cout << "Date Terminated: - " << endl;
+	}
+	else {
+		cout << "Date Terminated: " << dateTerminated->tm_year + 1900 << "-" << dateTerminated->tm_mon + 1 << "-" << dateTerminated->tm_mday << endl;
+	}
+
 	cout << "=================================================================" << endl << endl;
 
 	return data;
@@ -462,11 +477,10 @@ void sortByTutorId(Tutor **head, Tutor **tail, int *count) {
 	auto startTime = high_resolution_clock::now();
 
 	Tutor **temp = head;
-	bool swapped = false;
 
 	for (int i = 0; i < *count; i++) {
 		temp = head;
-		swapped = false;
+		bool swapped = false;
 
 		for (int j = 0; j < *count - i - 1; j++) {
 			Tutor* node1 = *temp;
@@ -668,19 +682,13 @@ Tutor *quickSortRecur(Tutor *head, Tutor *tail)
 
 	Tutor *newHead = NULL, *newEnd = NULL;
 
-	// Partition the list, newHead and newEnd will be updated
-	// by the partition function
+	// Partition the list
 	Tutor *pivot = partition(head, tail, &newHead, &newEnd);
 
-	// If pivot is the smallest element - no need to recur for
-	// the left part.
+	// If pivot is the smallest element no recursion needed for the left side.
 	if (newHead != pivot)
 	{
-		// Set the Tutor before the pivot Tutor as NULL
-		/*Tutor *tmp = newHead;
-		while (tmp->next != pivot)
-			tmp = tmp->next;
-		*/
+		// Set the Tutor before the pivot Tutor as NULL		
 		Tutor *tmp = pivot->prev;
 		tmp->next = NULL;
 
