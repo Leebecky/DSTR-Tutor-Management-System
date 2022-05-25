@@ -186,7 +186,7 @@ int tutorMenuControl(Tutor *head, Tutor *tail, int size, int menuSelection, int 
 	bool result = false;
 
 	Tutor *data = binarySearchTutorId(head, size, tutorId);
-
+			
 	// if record not found
 	if (!data) {
 		cout << endl << "Tutor cannot be modified because tutor Id not found." << endl << endl;
@@ -330,26 +330,31 @@ void displayTutorList(Tutor* head, int size, int* currentPage) {
 	}
 
 	currentPosition = (*currentPage - 1) * 5;
-
+	
 	cout << " Id" << "\t| ";
-	cout << "Tutor Name" << "\t| ";
+	cout << setw(30) << left << "Tutor Name" << " | ";
 	cout << "Pay Rate" << "\t| ";
-	cout << "Center Code" << "\t| ";
-	cout << "Center Name" << "\t| ";
-	cout << "Rating" << "\t| ";
+	//cout << "Center Code" << "\t| ";
+	cout << "Center Name" << "\t\t| ";
+	cout << "Rating" << " | ";
 	//cout << "Date Joined" << "\t| ";
 	cout << "Date Terminated" << endl;
+	
+	for (int i = 0; i < 100; i++)
+	{
+		cout << "=";
+	}
 
 	Tutor *temp = head;
 	for (int i = 0; i < maxPosition; i++)
 	{
 		if (i >= currentPosition) {
-			cout << " #" << (temp)->tutorId << "\t| ";
-			cout << (temp)->name << "\t\t| ";
+			cout << endl << " #" << (temp)->tutorId << "\t| ";
+			cout << setw(30) << left << (temp)->name << " | ";
 			cout << (temp)->hourlyPayRate << "\t\t| ";
-			cout << (temp)->centerCode << "\t\t| ";
-			cout << (temp)->centerName << "\t\t| ";
-			cout << (temp)->rating << endl;
+			//cout << (temp)->centerCode << "\t\t| ";
+			cout << (temp)->centerName << "\t| ";
+			cout << (temp)->rating << "\t | ";
 
 			dateTerminated = localtime(&(temp)->dateTerminated);
 			if (dateTerminated->tm_year + 1900 == 1970) {
