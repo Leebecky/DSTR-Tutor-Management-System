@@ -21,16 +21,16 @@ int main()
 	int tutorListCount = 0;
 	int currentPage = 1;
 
-	string userRole = "Admin";
+	string userRole = "HR";
 	bool auth = false;
 
 	cout << "Tutor Linked List System: " << timeStamp << endl;
 	cout << "Please login..." << endl;
-	cout << "Login is currently disabled...";
+	cout << "Login is currently disabled..." <<endl;
 	/*do {
 		auth = login(&userRole);
-	} while (!auth);*/
-
+	} while (!auth);
+*/
 	cout << "Welcome, " << userRole << ". Hit Enter to proceed" << endl;
 
 	cin.get();
@@ -71,7 +71,7 @@ int main()
 					goto resetDisplayMenu;
 				}
 
-				tutorMenuControl(&tutorMenu, &head, &tail, &tutorListCount, &currentPage, &userRole);
+				tutorListMenuControl(&tutorMenu, &head, &tail, &tutorListCount, &currentPage, &userRole);
 
 
 
