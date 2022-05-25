@@ -32,6 +32,7 @@ void logToFile(string data) {
 
 }
 
+//TODO Standardise data
 void definedTutor(Tutor* head) {
 	time_t dateJoined = time(NULL) - 31536000;
 	time_t withinMonths = time(NULL) - 2592000;
@@ -47,7 +48,7 @@ void definedTutor(Tutor* head) {
 	int centerCodeList[15] = {1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3};
 	string centerNameList[15] = { "Pusat Asia Jaya", "Pusat Asia Jaya", "Pusat Asia Jaya", "Pusat Asia Jaya", "Pusat Asia Jaya", "Pusat Megah Jaya", "Pusat Megah Jaya", "Pusat Megah Jaya", "Pusat Megah Jaya", "Pusat Megah Jaya", "Pusat Suru Jaya", "Pusat Suru Jaya", "Pusat Suru Jaya", "Pusat Suru Jaya", "Pusat Suru Jaya"};
 	int subjectCodeList[15] = {1, 5, 2, 3, 4, 9, 10, 2, 8, 7, 4 ,5, 3, 1, 10};
-	string subjectNameList[15] = { "Bahasa Melayu", "Biology", "English", "Sejarah", "Geografi", "Mathematics", "Additional Mathematics", "English", "Chemistry", "Physics", "Geografi", "Biology", "Chemistry", "Bahasa Melayu", "Additioanl Mathematics" };
+	string subjectNameList[15] = { "Bahasa Melayu", "Biology", "English", "Sejarah", "Geografi", "Mathematics", "Additional Mathematics", "English", "Chemistry", "Physics", "Geografi", "Biology", "Chemistry", "Bahasa Melayu", "Additional Mathematics" };
 	int ratingList[15] = {3, 5, 1, 3, 2, 2, 5, 1, 2, 5, 4, 4, 5, 3, 4};
 
 	for (int i = 0; i < 15; i++) {
@@ -298,7 +299,7 @@ void displayTutorList(Tutor* head, int size, int* currentPage) {
 
 Tutor *displayTutorDetails(Tutor *head, int size, int tutorId) {
 	Tutor *data = binarySearchTutorId(head, size, tutorId);
-
+	tm* dateTerminated;
 	// if record not found
 	if (!data) {
 		cout << endl << "Tutor not found." << endl << endl;
@@ -317,7 +318,16 @@ Tutor *displayTutorDetails(Tutor *head, int size, int tutorId) {
 	cout << "Center Name: \t" << data->centerName << endl;
 	cout << "Subject Code: \t" << data->subjectCode << endl;
 	cout << "Subject Name: \t" << data->subjectName << endl;
-	cout << "Date Terminated: " << data->dateTerminated << endl;
+	//cout << "Date Terminated: " << data->dateTerminated << endl;
+
+	dateTerminated = localtime(&(data)->dateTerminated);
+	if (dateTerminated->tm_year + 1900 == 1970) {
+		cout << "Date Terminated: - " << endl;
+	}
+	else {
+		cout << "Date Terminated: " << dateTerminated->tm_year + 1900 << "-" << dateTerminated->tm_mon + 1 << "-" << dateTerminated->tm_mday << endl;
+	}
+
 	cout << "=================================================================" << endl << endl;
 
 	return data;

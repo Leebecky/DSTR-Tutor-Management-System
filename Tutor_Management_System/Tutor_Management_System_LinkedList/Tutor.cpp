@@ -253,7 +253,7 @@ void generateData(Tutor **head, Tutor** tail, int* tutorListCount) {
 	Tutor *data12 = new Tutor(12, "Chan Mei Kong", dateJoined, 55.00, "012-24562453", "7-A-1, Emerald Condominium, 68000 Ampang, Selangor", 3, "Pusat Suru Jaya", 5, "Biology", 4, 0);
 	Tutor *data13 = new Tutor(13, "Cassi Hassan", dateJoined, 80.00, "016-756455554", "97, Jalan Bendara, Taman Antarabangsa, 68000 Ampang, Selangor", 3, "Pusat Suru Jaya", 8, "Chemistry", 5, 0);
 	Tutor *data14 = new Tutor(14, "Nurul Aslina", dateJoined, 50.00, "011-673334s76", "65, Jalan M3, Taman Mega, 68000 Ampang, Selangor", 3, "Pusat Suru Jaya", 1, "Bahasa Melayu", 3, outsideMonths);
-	Tutor *data15 = new Tutor(15, "Li Su Yan", dateJoined, 78.50, "018-88345346", "99, Jalan B1, Taman Bestari, 68000 Ampang, Selangor", 3, "Pusat Suru Jaya", 10, "Additioanl Mathematics", 4, outsideMonths);
+	Tutor *data15 = new Tutor(15, "Li Su Yan", dateJoined, 78.50, "018-88345346", "99, Jalan B1, Taman Bestari, 68000 Ampang, Selangor", 3, "Pusat Suru Jaya", 10, "Additional Mathematics", 4, outsideMonths);
 
 	data1->next = data2;
 	data1->prev = NULL;
@@ -287,7 +287,7 @@ void generateData(Tutor **head, Tutor** tail, int* tutorListCount) {
 
 	data11->next = data12;
 	data11->prev = data10;
-
+	
 	data12->next = data13;
 	data12->prev = data11;
 
