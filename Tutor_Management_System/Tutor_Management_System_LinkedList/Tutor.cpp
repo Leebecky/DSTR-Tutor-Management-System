@@ -12,12 +12,12 @@ bool login(string *userRole) {
 	cout << "Password: ";
 	getline(cin, password);
 
-	if (username == "Admin" && password == "admin123") { //Admin account
+	if (username == "Admin" && password == "Admin123") { //Admin account
 		*userRole = "Admin";
 		return true;
 	}
-	else if (username == "Tutor" && password == "Tutor123") { //Tutor account
-		*userRole = "Tutor";
+	else if (username == "Hr" && password == "Hr123") { //HR account
+		*userRole = "HR";
 		return true;
 	}
 	else {
@@ -80,7 +80,7 @@ void tutorListMenu(string *userRole)
 	cout << "3. Sort by Tutor Hourly Pay" << endl;
 	cout << "4. Sort by Tutor Rating" << endl;
 
-	if (*userRole == "Admin") {
+	if (*userRole == "HR") {
 		cout << "5. Delete Tutor" << endl;
 	}
 
@@ -91,16 +91,20 @@ void tutorListMenu(string *userRole)
 }
 
 // View Tutor > Menu
-void tutorMenuOptions() {
+void tutorMenuOptions(string *userRole) {
 	int menuSelection = -1;
-	cout << "1. Modify Phone Number" << endl;
-	cout << "2. Modify Address" << endl;
+	if (*userRole == "HR") {
+		cout << "1. Modify Address" << endl;
+		cout << "2. Modify Phone Number" << endl;
+	}
+	cout << "3. Next Tutor Record" << endl;
+	cout << "4. Previous Tutor Record" << endl;
 	cout << "0. Back to Display Menu" << endl;
 	cout << "Please enter the desired menu option: ";
 }
 
 //Redirects the user based on given input
-void tutorMenuControl(int* input, Tutor** head, Tutor** tail, int *tutorListCount, int* currentPage)
+void tutorListMenuControl(int* input, Tutor** head, Tutor** tail, int *tutorListCount, int* currentPage, string *userRole)
 {
 	int tutorIdSelection = -1, opt = -1;
 	bool  result = false;
@@ -120,14 +124,16 @@ void tutorMenuControl(int* input, Tutor** head, Tutor** tail, int *tutorListCoun
 			goto resetTutorView;
 		}
 
-		cout << endl << "Tutor Details Here" << endl << endl;
-
 		do {
-			//TODO Display Tutor Details	
+			Tutor *data = displayTutorDetails((*head), *tutorListCount, tutorIdSelection);
 
-			tutorMenuOptions();
+			if (!data) {
+				break;
+			}
+
+			tutorMenuOptions(userRole);
 			cin >> opt;
-			tutorMenuControl((*head), *tutorListCount, opt, tutorIdSelection);
+			tutorIdSelection = tutorMenuControl((*head), (*tail), *tutorListCount, opt, tutorIdSelection);
 		} while (opt > 0);
 		break;
 	case 2:
@@ -176,35 +182,54 @@ void tutorMenuControl(int* input, Tutor** head, Tutor** tail, int *tutorListCoun
 }
 
 // View Tutor > Menu Control
-void tutorMenuControl(Tutor *head, int size, int menuSelection, int tutorId) {
+int tutorMenuControl(Tutor *head, Tutor *tail, int size, int menuSelection, int tutorId) {
 	string dataValue = "";
 	bool result = false;
 
+	Tutor *data = binarySearchTutorId(head, size, tutorId);
+			
+	// if record not found
+	if (!data) {
+		cout << endl << "Tutor cannot be modified because tutor Id not found." << endl << endl;
+		return -1;
+	}
+
 	switch (menuSelection) {
+
 	case 1:
-		cout << "Enter the phone number: ";
-		cin.ignore();
-		getline(cin, dataValue);
-		result = modifyTutor(head, size, tutorId, &dataValue, "Phone");
-
-		if (result) {
-			cout << endl << "Tutor phone number updated" << endl << endl;
-		}
-
-		break;
-	case 2:
 		cout << "Enter the address: ";
 		cin.ignore();
 		getline(cin, dataValue);
-		result = modifyTutor(head, size, tutorId, &dataValue, "Address");
+		result = modifyTutor(data, &dataValue, "Address");
 
 		if (result) {
-			cout << endl << "Tutor address updated" << endl << endl;
+			cout << endl << "Tutor address updated" << endl;
 		}
 
-		break;
+		return data->tutorId;
+	case 2:
+		cout << "Enter the phone number: ";
+		cin.ignore();
+		getline(cin, dataValue);
+		result = modifyTutor(data, &dataValue, "Phone");
+
+		if (result) {
+			cout << endl << "Tutor phone number updated" << endl;
+		}
+
+		return data->tutorId;
+	case 3:
+		if (data->next == NULL) { // if end of list, skip back to front
+			return head->tutorId;
+		}
+		return data->next->tutorId;
+	case 4:
+		if (data->prev == NULL) { // If start of list, skip to end
+			return tail->tutorId;
+		}
+		return data->prev->tutorId;
 	default:
-		break;
+		return data->tutorId;
 	}
 
 }
@@ -229,7 +254,7 @@ void generateData(Tutor **head, Tutor** tail, int* tutorListCount) {
 	Tutor *data12 = new Tutor(12, "Chan Mei Kong", dateJoined, 55.00, "012-24562453", "7-A-1, Emerald Condominium, 68000 Ampang, Selangor", 3, "Pusat Suru Jaya", 5, "Biology", 4, 0);
 	Tutor *data13 = new Tutor(13, "Cassi Hassan", dateJoined, 80.00, "016-756455554", "97, Jalan Bendara, Taman Antarabangsa, 68000 Ampang, Selangor", 3, "Pusat Suru Jaya", 8, "Chemistry", 5, 0);
 	Tutor *data14 = new Tutor(14, "Nurul Aslina", dateJoined, 50.00, "011-673334s76", "65, Jalan M3, Taman Mega, 68000 Ampang, Selangor", 3, "Pusat Suru Jaya", 1, "Bahasa Melayu", 3, outsideMonths);
-	Tutor *data15 = new Tutor(15, "Li Su Yan", dateJoined, 78.50, "018-88345346", "99, Jalan B1, Taman Bestari, 68000 Ampang, Selangor", 3, "Pusat Suru Jaya", 10, "Additioanl Mathematics", 4, outsideMonths);
+	Tutor *data15 = new Tutor(15, "Li Su Yan", dateJoined, 78.50, "018-88345346", "99, Jalan B1, Taman Bestari, 68000 Ampang, Selangor", 3, "Pusat Suru Jaya", 10, "Additional Mathematics", 4, outsideMonths);
 
 	data1->next = data2;
 	data1->prev = NULL;
@@ -263,7 +288,7 @@ void generateData(Tutor **head, Tutor** tail, int* tutorListCount) {
 
 	data11->next = data12;
 	data11->prev = data10;
-
+	
 	data12->next = data13;
 	data12->prev = data11;
 
@@ -306,26 +331,31 @@ void displayTutorList(Tutor* head, int size, int* currentPage) {
 	}
 
 	currentPosition = (*currentPage - 1) * 5;
-
+	
 	cout << " Id" << "\t| ";
-	cout << "Tutor Name" << "\t| ";
+	cout << setw(30) << left << "Tutor Name" << " | ";
 	cout << "Pay Rate" << "\t| ";
-	cout << "Center Code" << "\t| ";
-	cout << "Center Name" << "\t| ";
-	cout << "Rating" << "\t| ";
+	//cout << "Center Code" << "\t| ";
+	cout << "Center Name" << "\t\t| ";
+	cout << "Rating" << " | ";
 	//cout << "Date Joined" << "\t| ";
 	cout << "Date Terminated" << endl;
+	
+	for (int i = 0; i < 100; i++)
+	{
+		cout << "=";
+	}
 
 	Tutor *temp = head;
 	for (int i = 0; i < maxPosition; i++)
 	{
 		if (i >= currentPosition) {
-			cout << " #" << (temp)->tutorId << "\t| ";
-			cout << (temp)->name << "\t\t| ";
+			cout << endl << " #" << (temp)->tutorId << "\t| ";
+			cout << setw(30) << left << (temp)->name << " | ";
 			cout << (temp)->hourlyPayRate << "\t\t| ";
-			cout << (temp)->centerCode << "\t\t| ";
-			cout << (temp)->centerName << "\t\t| ";
-			cout << (temp)->rating << endl;
+			//cout << (temp)->centerCode << "\t\t| ";
+			cout << (temp)->centerName << "\t| ";
+			cout << (temp)->rating << "\t | ";
 
 			dateTerminated = localtime(&(temp)->dateTerminated);
 			if (dateTerminated->tm_year + 1900 == 1970) {
@@ -342,6 +372,7 @@ void displayTutorList(Tutor* head, int size, int* currentPage) {
 
 	cout << "\nPage  " << *currentPage << " / " << maxPage << endl;
 }
+
 
 
 // ======================================= ADD TUTOR ==================================== //
@@ -364,6 +395,43 @@ void insertIntoTheEndofList(Tutor* newnode, Tutor* head, Tutor* tail)
 }
 
 
+
+// Display the details of an individual record
+Tutor *displayTutorDetails(Tutor *head, int size, int tutorId) {
+	Tutor *data = binarySearchTutorId(head, size, tutorId);
+	tm* dateTerminated;
+	// if record not found
+	if (!data) {
+		cout << endl << "Tutor not found." << endl << endl;
+		return NULL;
+	}
+
+	cout << endl << "=================================================================" << endl;
+	cout << "\t#" << data->tutorId << "\t" << data->name << endl;
+	cout << "=================================================================" << endl;
+	cout << "Address: \t" << data->address << endl;
+	cout << "Phone Number: \t" << data->phone << endl;
+	cout << "Rating: \t" << data->rating << endl;
+	cout << "Hourly Pay Rate: " << data->hourlyPayRate << endl;
+	cout << "Date Joined: \t" << data->dateJoined << endl;
+	cout << "Center Code: \t" << data->centerCode << endl;
+	cout << "Center Name: \t" << data->centerName << endl;
+	cout << "Subject Code: \t" << data->subjectCode << endl;
+	cout << "Subject Name: \t" << data->subjectName << endl;
+	//cout << "Date Terminated: " << data->dateTerminated << endl;
+
+	dateTerminated = localtime(&(data)->dateTerminated);
+	if (dateTerminated->tm_year + 1900 == 1970) {
+		cout << "Date Terminated: - " << endl;
+	}
+	else {
+		cout << "Date Terminated: " << dateTerminated->tm_year + 1900 << "-" << dateTerminated->tm_mon + 1 << "-" << dateTerminated->tm_mday << endl;
+	}
+
+	cout << "=================================================================" << endl << endl;
+
+	return data;
+}
 
 
 // Delete Tutor - Binary Search
@@ -415,13 +483,12 @@ bool deleteTutor(Tutor** head, Tutor **tail, int size, int tutorId) {
 
 }
 
-// Modify Tutor - Binary Search
-bool modifyTutor(Tutor *head, int size, int tutorId, string *dataValue, string updateAttribute) {
-	Tutor *data = binarySearchTutorId(head, size, tutorId);
+// Modify Tutor Record
+bool modifyTutor(Tutor *data, string *dataValue, string updateAttribute) {
 
-	// if record not found
-	if (!data) {
-		cout << endl << "Tutor cannot be modified because tutor Id not found." << endl << endl;
+	if (*dataValue == "") {
+
+		cout << endl << "No data provided. " << updateAttribute << " not updated" << endl;
 		return false;
 	}
 
@@ -440,11 +507,10 @@ void sortByTutorId(Tutor **head, Tutor **tail, int *count) {
 	auto startTime = high_resolution_clock::now();
 
 	Tutor **temp = head;
-	bool swapped = false;
 
 	for (int i = 0; i < *count; i++) {
 		temp = head;
-		swapped = false;
+		bool swapped = false;
 
 		for (int j = 0; j < *count - i - 1; j++) {
 			Tutor* node1 = *temp;
@@ -712,19 +778,13 @@ Tutor *quickSortRecur(Tutor *head, Tutor *tail)
 
 	Tutor *newHead = NULL, *newEnd = NULL;
 
-	// Partition the list, newHead and newEnd will be updated
-	// by the partition function
+	// Partition the list
 	Tutor *pivot = partition(head, tail, &newHead, &newEnd);
 
-	// If pivot is the smallest element - no need to recur for
-	// the left part.
+	// If pivot is the smallest element no recursion needed for the left side.
 	if (newHead != pivot)
 	{
-		// Set the Tutor before the pivot Tutor as NULL
-		/*Tutor *tmp = newHead;
-		while (tmp->next != pivot)
-			tmp = tmp->next;
-		*/
+		// Set the Tutor before the pivot Tutor as NULL		
 		Tutor *tmp = pivot->prev;
 		tmp->next = NULL;
 

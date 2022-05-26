@@ -1,55 +1,73 @@
 // Tutor_Management_System.cpp : This file contains the 'main' function. Program execution begins and ends there.
 //
 
-#include <iostream>
-#include <string>
 #include "Tutor.h"
-
-using namespace std;
 
 int main()
 {
-	//Sample Function Call
-	//test("test");
+	// Logging start up time
+	time_t end_time = system_clock::to_time_t(system_clock::now());
+	char timeStamp[26] = {};
+	string timeStampStr = "";
+	ctime_s(timeStamp, 26, &end_time);
+	logToFile("\nSystem Start: " + timeStampStr.append(timeStamp));
 
 	//Variables
 	int menuInput = -1;
-	Tutor tutor[15];
-	Tutor* ptr = tutor;
-	int size = (sizeof(tutor) / sizeof(tutor[0]));
+	//Tutor tutor[15];
+	Tutor* ptr = new Tutor[15];
+	int size = 15;
 	int currentPage = 1;
 
-	cout << "This is the Tutor Array System" << endl;
-	cout << "Login to be implemented..." << endl;
-	cout << "Hit Enter to proceed" << endl;
+	string userRole = "Admin";
+	bool auth = false;
+
+	cout << "Tutor Array System: " << timeStamp << endl;
+	cout << "Please login..." << endl;
+	cout << "Login is currently disabled...";
+	/*do {
+		auth = login(&userRole);
+	} while (!auth);*/
+
+	cout << "Welcome, " << userRole << ". Hit Enter to proceed" << endl;
 
 	cin.get();
 
-	//cout << "Main Menu:" << endl;
-	//cout << "1. Display All Tutor" << endl;
-	//cout << "2. Add New Tutor" << endl;
-	//cout << "3. Search by Tutor ID" << endl;
-	//cout << "4. Search by Tutor Rating" << endl;
-	//cout << "5. Exit" << endl;
-	//cout << "Please enter the desired menu option: ";
-
 	do
 	{
+	menuReset: 
 		definedTutor(ptr);
-
 		mainMenu();
 		cin >> menuInput;
+
+		// Input validation
+		if (cin.fail()) {
+			cin.clear();
+			cin.ignore(numeric_limits<streamsize>::max(), '\n');
+			cout << endl << "Invalid input. Please provide a valid id" << endl;
+			goto menuReset;
+		}
 
 		int tutorMenu = -1;
 		switch (menuInput)
 		{
 		case 1:
+		resetDisplayMenu:
 			cout << endl;
 			do
 			{
-				tutorListMenu(ptr, &size, &currentPage);
+				tutorListMenu(&userRole, ptr, &size, &currentPage);
 				cin >> tutorMenu;
-				tutorMenuControl(&tutorMenu, ptr, &size, &currentPage);
+
+				// Input validation
+				if (cin.fail()) {
+					cin.clear();
+					cin.ignore(numeric_limits<streamsize>::max(), '\n');
+					cout << endl << "Invalid input. Please provide a valid id" << endl;
+					goto resetDisplayMenu;
+				}
+
+				tutorListMenuControl(&tutorMenu, &ptr, &size, &currentPage, &userRole);
 
 				cout << endl;
 			} while (tutorMenu > 0);
