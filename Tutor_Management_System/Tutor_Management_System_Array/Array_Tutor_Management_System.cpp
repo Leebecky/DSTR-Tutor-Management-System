@@ -14,9 +14,9 @@ int main()
 
 	//Variables
 	int menuInput = -1;
-	Tutor tutor[15];
-	Tutor* ptr = tutor;
-	int size = (sizeof(tutor) / sizeof(tutor[0]));
+	//Tutor tutor[15];
+	Tutor* ptr = new Tutor[15];
+	int size = 15;
 	int currentPage = 1;
 
 	string userRole = "Admin";
@@ -67,7 +67,7 @@ int main()
 					goto resetDisplayMenu;
 				}
 
-				tutorListMenuControl(&tutorMenu, ptr, &size, &currentPage, &userRole);
+				tutorListMenuControl(&tutorMenu, &ptr, &size, &currentPage, &userRole);
 
 				cout << endl;
 			} while (tutorMenu > 0);

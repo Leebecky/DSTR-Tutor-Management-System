@@ -111,7 +111,7 @@ void tutorMenuOptions(string *userRole) {
 	cout << "Please enter the desired menu option: ";
 }
 
-void tutorListMenuControl(int* input, Tutor* head, int* size, int* currentPage, string *userRole)
+void tutorListMenuControl(int* input, Tutor** head, int* size, int* currentPage, string *userRole)
 {
 	int tutorIdSelection = -1, opt = -1;
 	bool  result = false;
@@ -132,7 +132,7 @@ void tutorListMenuControl(int* input, Tutor* head, int* size, int* currentPage, 
 		}
 
 		do {
-			Tutor *data = displayTutorDetails(head, *size, tutorIdSelection);
+			Tutor *data = displayTutorDetails((*head), *size, tutorIdSelection);
 
 			if (!data) {
 				break;
@@ -140,25 +140,25 @@ void tutorListMenuControl(int* input, Tutor* head, int* size, int* currentPage, 
 
 			tutorMenuOptions(userRole);
 			cin >> opt;
-			tutorIdSelection = tutorMenuControl(head, *size, opt, tutorIdSelection);
+			tutorIdSelection = tutorMenuControl((*head), *size, opt, tutorIdSelection);
 		} while (opt > 0);
 		break;
 	case 2:
-		sortByTutorId(head, *size);
+		sortByTutorId((*head), *size);
 		cout << "Sort by Tutor Id" << endl;
 		break;
 	case 3:
-		sortByHourlyPay(head, 0, *size - 1);
+		sortByHourlyPay((*head), 0, *size - 1);
 		cout << "Sort by Pay" << endl;
 		break;
 	case 4:
-		sortByRating(head, 0, *size - 1);
+		sortByRating((*head), 0, *size - 1);
 		cout << "Sort by Rating" << endl;
 		break;
 	case 5:
 		cout << "Enter tutor id: ";
 		cin >> tutorIdSelection;
-		sortByTutorId(head, *size);
+		sortByTutorId((*head), *size);
 		result = deleteTutor(head, 0, *size - 1, tutorIdSelection);
 
 		if (result) {
@@ -484,35 +484,37 @@ void mergeSorting(Tutor* head, int low, int high, int mid) {
 	}
 }
 
-bool deleteTutor(Tutor* head, int low, int size, int tutorId) {
+bool deleteTutor(Tutor** head, int low, int size, int tutorId) {
 	int mid, p = 0, high = size;
 	time_t today = time(NULL);
 
 	while (low <= high) {
 		mid = (low + high) / 2;
 
-		if (tutorId == (head + mid)->tutorId) {
+		if (tutorId == (*head + mid)->tutorId) {
 			cout << "\n\n";
 
-			if ((head + mid)->dateTerminated == 0) {
+			if ((*head + mid)->dateTerminated == 0) {
 				cout << "Tutor cannot be deleted because tutor is not terminated." << endl;
 				return false;
 			}
-			else if (today - (head + mid)->dateTerminated < 15552000) {
+			else if (today - (*head + mid)->dateTerminated < 15552000) {
 				cout << "Tutor cannot be deleted because terminated date is less than 6 months." << endl;
 				return false;
 			}
 			else {
-				for (int i = mid; i < size; i++) {
-					head[i] = head[i + 1];
-				}
+				Tutor *newArray = new Tutor[size];
+				std::copy((*head), (*head) + mid, newArray);
+				std::copy((*head) + mid + 1, (*head) + size + 1, newArray + mid);
+				delete[](*head);
+				(*head) = newArray;
 
 				p = 1;
 				return true;
 			}
 		}
 		else {
-			if (tutorId < (head + mid)->tutorId) {
+			if (tutorId < (*head + mid)->tutorId) {
 				high = mid - 1;
 			}
 			else {

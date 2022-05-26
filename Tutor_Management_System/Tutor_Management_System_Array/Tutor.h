@@ -37,7 +37,7 @@ void definedTutor(Tutor* head);	// Predefined Tutors
 bool login(string *userRole);
 void mainMenu(); // Main Menu
 void tutorListMenu(string *userRole, Tutor* ptr, int* size, int* currentPage); // Main Menu > Display All Tutor
-void tutorListMenuControl(int* input, Tutor* head, int* size, int* currentPage, string *userRole); //Tutor List Menu Control
+void tutorListMenuControl(int* input, Tutor** head, int* size, int* currentPage, string *userRole); //Tutor List Menu Control
 void tutorMenuOptions(string *userRole);
 int tutorMenuControl(Tutor *head, int size, int menuSelection, int tutorId);
 void logToFile(string data);
@@ -47,7 +47,7 @@ void displayTutorList(Tutor* head, int size, int* currentPage); //Displays the l
 
 void addTutor(Tutor* head, Tutor* newData); //Adds a new tutor to the list
 bool modifyTutor(Tutor *data, string *dataValue, string updateAttribute); //Updates the tutor record
-bool deleteTutor(Tutor* head, int low, int size, int tutorId); //Deletes the selected tutor and returns True/False to indicate success
+bool deleteTutor(Tutor** head, int low, int size, int tutorId); //Deletes the selected tutor and returns True/False to indicate success
 
 /*
 ===========================================================
