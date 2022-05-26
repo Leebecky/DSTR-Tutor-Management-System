@@ -34,6 +34,27 @@ public: //Constructor
 	Tutor(int tutorId, string name, time_t dateJoined, double hourlyPayRate, string phone, string address, int centerCode, string centreName, int subjectCode, string subjectName, int rating, time_t dateTerminated); //Base constructor
 };
 
+Tutor* CreateNewNnode(int tutorId, string name, time_t dateJoined, time_t dateTerminated, string phone, string address, int centerCode, string centerName, int subjectCode, string subjectName, int hourlyPayRate, int rating) //create a newnode - use for any insert
+{
+	Tutor* newnode = new Tutor;
+	newnode->tutorId = tutorId;
+	newnode->name = name;
+	newnode->dateJoined = dateJoined;
+	newnode->dateTerminated = dateTerminated;
+	newnode->hourlyPayRate = hourlyPayRate;
+	newnode->phone = phone;
+	newnode->address = address;
+	newnode->centerCode = centerCode;
+	newnode->centerName = centerName;
+	newnode->subjectCode = subjectCode;
+	newnode->subjectName = subjectName;
+	newnode->rating = rating;
+	newnode->next = NULL;
+	newnode->prev = NULL;
+
+	return newnode;
+}
+
 
 /*
 ===========================================================

@@ -54,6 +54,7 @@ Tutor::Tutor(int tutorId, string name, time_t dateJoined, double hourlyPayRate, 
 	this->rating = rating;
 	this->dateTerminated = dateTerminated;
 
+	Tutor* nextAddress;
 }
 
 
@@ -372,6 +373,29 @@ void displayTutorList(Tutor* head, int size, int* currentPage) {
 	cout << "\nPage  " << *currentPage << " / " << maxPage << endl;
 }
 
+
+
+// ======================================= ADD TUTOR ==================================== //
+// Add item into the list
+void insertIntoTheEndofList(Tutor* newnode, Tutor* head, Tutor* tail)
+{
+	// Check whether the list is empty?
+	if (head == NULL) // If list is empty
+	{
+		head = newnode;
+	}
+	else // Else list is not empty
+	{
+		//Find the last node
+		Tutor* current = tail;
+
+		current->next = newnode;
+		current->next->prev = current;
+	}
+}
+
+
+
 // Display the details of an individual record
 Tutor *displayTutorDetails(Tutor *head, int size, int tutorId) {
 	Tutor *data = binarySearchTutorId(head, size, tutorId);
@@ -408,6 +432,7 @@ Tutor *displayTutorDetails(Tutor *head, int size, int tutorId) {
 
 	return data;
 }
+
 
 // Delete Tutor - Binary Search
 bool deleteTutor(Tutor** head, Tutor **tail, int size, int tutorId) {
@@ -538,6 +563,72 @@ void sortByRating(Tutor **head, Tutor **tail) {
 	auto duration = duration_cast<microseconds>(endTime - startTime);
 	logToFile("Merge Sort: " + to_string(duration.count()) + " microseconds");
 }
+
+
+
+// =========================== SEARCH TUTOR BY RATING ================================== //
+void searchTutorRating(Tutor* head)
+{
+	int rating = 1;
+	Tutor* current = head;
+	bool havedata = false;
+	while (rating >= 1 && rating <= 5) {
+		cout << "Please enter a rating from 1 to 5: ";
+		cin >> rating;
+
+		while (current != NULL) {
+			if (to_string(current->rating).find(to_string(rating)) != string::npos) {
+				cout << "Tutor ID: " << current->tutorId << endl << "Tutor Name: " << current->name << endl << "Date Joined: " << current->dateJoined << endl << "Date Terminated: "
+					<< current->dateTerminated << endl << "Hourly Pay Rate: " << current->hourlyPayRate << endl << "Phone: " << current->phone << endl << "Address: " << current->address
+					<< endl << "Center ID: " << current->centerCode << endl << "Center Name: " << current->centerName << endl << "Subject ID: " << current->subjectCode << endl << "Subject Name: "
+					<< current->subjectName << endl << "Rating: " << current->rating << endl << endl;
+				havedata = true;
+			}
+			current = current->next;
+		}
+		if (havedata == false) {
+			cout << "Record does not exist" << endl;
+		}
+		cout << endl;
+		current = head;
+		havedata = false;
+	}
+}
+
+
+
+// =============================================== SEARCH BY TUTOR ID =======================================//
+void searchTutorID(Tutor* head)
+{
+	int tutorId = 1;
+	Tutor* current = head;
+	bool havedata = false;
+	while (tutorId >= 1 && tutorId <= 20) {
+		cout << "Please enter your tutor ID ";
+		cin >> tutorId;
+
+		while (current != NULL) {
+			if (to_string(current->tutorId).find(to_string(tutorId)) != string::npos) {
+				cout << "Tutor ID: " << current->tutorId << endl << "Tutor Name: " << current->name << endl << "Date Joined: " << current->dateJoined << endl << "Date Terminated: "
+					<< current->dateTerminated << endl << "Hourly Pay Rate: " << current->hourlyPayRate << endl << "Phone: " << current->phone << endl << "Address: " << current->address
+					<< endl << "Center ID: " << current->centerCode << endl << "Center Name: " << current->centerName << endl << "Subject ID: " << current->subjectCode << endl << "Subject Name: "
+					<< current->subjectName << endl << "Rating: " << current->rating << endl << endl;
+				havedata = true;
+			}
+			current = current->next;
+		}
+		if (havedata == false) {
+			cout << "Record does not exist" << endl;
+		}
+		cout << endl;
+		current = head;
+		havedata = false;
+	}
+}
+
+
+
+
 
 /*
 ===========================================================================
