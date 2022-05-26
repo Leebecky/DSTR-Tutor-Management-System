@@ -46,7 +46,7 @@ void displayTutorList(Tutor* head, int size, int* currentPage); //Displays the l
 
 void addTutor(Tutor* head, Tutor* newData); //Adds a new tutor to the list
 bool modifyTutor(Tutor *data, string *dataValue, string updateAttribute); //Updates the tutor record
-bool deleteTutor(Tutor* head, int low, int size, int tutorId); //Deletes the selected tutor and returns True/False to indicate success
+bool deleteTutor(Tutor** head, int low, int size, int tutorId); //Deletes the selected tutor and returns True/False to indicate success
 
 /*
 ===========================================================

@@ -158,7 +158,7 @@ void tutorListMenuControl(int* input, Tutor* head, int* size, int* currentPage, 
 		cout << "Enter tutor id: ";
 		cin >> tutorIdSelection;
 		sortByTutorId(head, *size);
-		result = deleteTutor(head, 0, *size - 1, tutorIdSelection);
+		result = deleteTutor(&head, 0, *size - 1, tutorIdSelection);
 
 		if (result) {
 			*size = *size - 1;
@@ -467,35 +467,41 @@ void mergeSorting(Tutor* head, int low, int high, int mid) {
 	}
 }
 
-bool deleteTutor(Tutor* head, int low, int size, int tutorId) {
+bool deleteTutor(Tutor** head, int low, int size, int tutorId) {
 	int mid, p = 0, high = size;
 	time_t today = time(NULL);
 
 	while (low <= high) {
 		mid = (low + high) / 2;
 
-		if (tutorId == (head + mid)->tutorId) {
+		if (tutorId == (*head + mid)->tutorId) {
 			cout << "\n\n";
 
-			if ((head + mid)->dateTerminated == 0) {
+			if ((*head + mid)->dateTerminated == 0) {
 				cout << "Tutor cannot be deleted because tutor is not terminated." << endl;
 				return false;
 			}
-			else if (today - (head + mid)->dateTerminated < 15552000) {
+			else if (today - (*head + mid)->dateTerminated < 15552000) {
 				cout << "Tutor cannot be deleted because terminated date is less than 6 months." << endl;
 				return false;
 			}
 			else {
-				for (int i = mid; i < size; i++) {
-					head[i] = head[i + 1];
-				}
+				//for (int i = mid; i < size; i++) {
+				//	head[i] = head[i + 1];
+				//}
+
+				Tutor *newArray = new Tutor[size];
+				std::copy((*head), (*head) + mid, newArray);
+				std::copy((*head) + mid + 1, (*head) + size + 1, newArray + mid);
+				delete[](*head);
+				(*head) = newArray;
 
 				p = 1;
 				return true;
 			}
 		}
 		else {
-			if (tutorId < (head + mid)->tutorId) {
+			if (tutorId < (*head + mid)->tutorId) {
 				high = mid - 1;
 			}
 			else {
