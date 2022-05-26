@@ -14,10 +14,13 @@ int main()
 
 	//Variables
 	int menuInput = -1;
-	Tutor tutor[15];
-	Tutor* ptr = tutor;
-	int size = (sizeof(tutor) / sizeof(tutor[0]));
+	//Tutor tutor[15];
+	Tutor* ptr = new Tutor[15];
+	int size = 15;
 	int currentPage = 1;
+	int rating;
+	int tutorIdSelection = -1, opt = -1;
+	bool  result = false;
 
 	string userRole = "Admin";
 	bool auth = false;
@@ -75,12 +78,40 @@ int main()
 			break;
 		case 2:
 			cout << "Add New Tutor" << endl;
+			addTutor(&ptr, &size);
 			break;
 		case 3:
+		resetTutorView:
+			
 			cout << "Search ID" << endl;
+			cout << "Enter tutor id: ";
+			cin >> tutorIdSelection;
+
+			// Input validation
+			if (cin.fail()) {
+				cin.clear();
+				cin.ignore(numeric_limits<streamsize>::max(), '\n');
+				cout << "Invalid input. Please provide a valid id" << endl;
+				goto resetTutorView;
+			}
+
+			do {
+				Tutor* data = displayTutorDetails(ptr, size, tutorIdSelection);
+
+				if (!data) {
+					break;
+				}
+
+				tutorMenuOptions(&userRole);
+				cin >> opt;
+				tutorIdSelection = tutorMenuControl(ptr, size, opt, tutorIdSelection);
+			} while (opt > 0);
 			break;
 		case 4:
 			cout << "Search Rating" << endl;
+			cout << "Enter rating: ";
+			cin >> rating;
+			SearchByRating(ptr, rating, size);
 			break;
 		default:
 			break;

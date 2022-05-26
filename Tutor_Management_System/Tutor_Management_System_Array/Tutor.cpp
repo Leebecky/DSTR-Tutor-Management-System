@@ -334,7 +334,7 @@ Tutor *displayTutorDetails(Tutor *head, int size, int tutorId) {
 }
 
 // Binary Search
-Tutor *binarySearchTutorId(Tutor* head, int size, int tutorId) {
+Tutor* binarySearchTutorId(Tutor* head, int size, int tutorId) {
 	int low = 0, mid, high = size;
 
 	while (low <= high) {
@@ -355,6 +355,7 @@ Tutor *binarySearchTutorId(Tutor* head, int size, int tutorId) {
 
 	return NULL;
 }
+
 
 int binarySearchTutorIndex(Tutor* head, int size, int tutorId) {
 	int low = 0, mid, high = size;
@@ -378,9 +379,174 @@ int binarySearchTutorIndex(Tutor* head, int size, int tutorId) {
 	return NULL;
 }
 
-void addTutor(Tutor * head, Tutor * newData)
-{
+void SearchByRating(Tutor* head, int rating, int size) {
+	tm* dateTerminated;
+	cout << " Id" << "\t| ";
+	cout << setw(30) << left << "Tutor Name" << " | ";
+	cout << "Pay Rate" << "\t| ";
+	cout << "Center Name" << "\t\t| ";
+	cout << "Rating" << "\t| ";
+	cout << "Date Terminated" << endl;
 
+	for (int i = 0; i < 120; i++) {
+		cout << "=";
+	}
+
+	for (int i = 0; i < size; i++)
+	{
+		if ((head + i)->rating == rating) {
+			cout << "\n #" << (head + i)->tutorId << "\t| ";
+			cout << setw(30) << left << (head + i)->name << " | ";
+			cout << (head + i)->hourlyPayRate << "\t\t| ";
+			cout << (head + i)->centerName << "\t| ";
+			cout << (head + i)->rating << "\t\t| ";
+
+			dateTerminated = localtime(&(head + i)->dateTerminated);
+
+			if ((head + i)->dateTerminated == 0) {
+				cout << " - " << endl;
+			}
+			else {
+				cout << dateTerminated->tm_year + 1900 << "-" << dateTerminated->tm_mon + 1 << "-" << dateTerminated->tm_mday << endl;
+			}
+		}
+
+		
+	}
+
+	//cout << "\nPage  " << *currentPage << " / " << maxPage << endl;
+
+}
+
+//void resize(Tutor** test, int* currentSize) {
+//	int newSize = *currentSize + 1;
+//	Tutor* newArray = new Tutor[newSize];
+//	std::copy((*test), (*test) + (*currentSize), newArray);
+//
+//	(newArray + (newSize - 1))->tutorId = newSize;
+//	*currentSize = newSize;
+//	delete* test;
+//	*test = newArray;
+//	//deallocate here
+////return newArray;
+//}
+
+//Add Tutor
+void addTutor(Tutor ** head, int* size)
+{
+	std::string name,phone,address,centerName,subjectName;
+	time_t dateTerminated;
+	double hourlyPayRate;
+	int centerCode,subjectCode,rating;
+	time_t dateJoined = time(NULL) - 31536000;
+	bool isValid = true;
+	
+	cout << "Name: ";
+	cin >> name; cout << endl;
+	
+	cout << "Hourly Pay Rate: ";
+	cin >> hourlyPayRate; cout << endl;
+	//Input validation
+	while (!(hourlyPayRate >= 40 && hourlyPayRate <= 80))
+	{
+		cout << "Invalid Input. Try Again." << endl;
+		cout << "Enter a Rate from 40.00 - 80.00: ";
+		cin >> hourlyPayRate; cout << endl;
+	}
+
+	cout << "Phone: ";
+	cin >> phone; cout << endl;
+
+	cout << "Address: ";
+	cin >> address; cout << endl;
+
+	cout << "Center Code: ";
+	cin >> centerCode; cout << endl;
+	switch (centerCode)
+	{
+	case 1:
+		centerName = "Pusat Asia Jaya";
+		break;
+	case 2:
+		centerName = "Pusat Megah Jaya";
+		break;
+	case 3:
+		centerName = "Pusat Suru Jaya";
+		break;
+	default:
+		isValid = false;
+	}
+
+	cout << "Subject Code: ";
+	cin >> subjectCode; cout << endl;
+	switch (subjectCode)
+	{
+	case 1:
+		subjectName = "Bahasa Melayu";
+		break;
+	case 2:
+		subjectName = "English";
+		break;
+	case 3:
+		subjectName = "Sejarah";
+		break;
+	case 4:
+		subjectName = "Geografi";
+		break;
+	case 5:
+		subjectName = "Biology";
+		break;
+	case 6:
+		subjectName = "Accounts";
+		break;
+	case 7:
+		subjectName = "Physics";
+		break;
+	case 8:
+		subjectName = "Chemistry";
+		break;
+	case 9:
+		subjectName = "Mathematics";
+		break;
+	case 10:
+		subjectName = "Additional Mathematics";
+		break;
+	default:
+		isValid = false;
+	}
+
+	cout << "Rating: ";
+	cin >> rating; cout << endl;
+	//Input Validation
+	while (!(rating >= 1 && rating <= 5))
+	{
+		cout << "Invalid Input. Try Again." << endl;
+		cout << "Enter a Rating from 1 - 5: ";
+		cin >> rating; cout << endl;
+	}
+
+	int newSize = *size + 1;
+	int newIndex = newSize - 1;
+	Tutor* newArray = new Tutor[newSize];
+	std::copy((*head), (*head) + (*size), newArray);
+	sortByTutorId(*head, *size);
+	(newArray + newIndex)->tutorId = (*head + *size - 1)->tutorId+1;
+	(newArray + newIndex)->name = name;
+	(newArray + newIndex)->dateJoined = dateJoined;
+	(newArray + newIndex)->dateTerminated = 0;
+	(newArray + newIndex)->hourlyPayRate = hourlyPayRate;
+	(newArray + newIndex)->phone = phone;
+	(newArray + newIndex)->address = address;
+	(newArray + newIndex)->centerCode = centerCode;
+	(newArray + newIndex)->centerName = centerName;
+	(newArray + newIndex)->subjectCode = subjectCode;
+	(newArray + newIndex)->subjectName = subjectName;
+	(newArray + newIndex)->rating = rating;
+
+	*size = newSize;
+	//delete* head;
+	*head = newArray;
+	//return newArray;
 }
 
 // Bubble Sort
