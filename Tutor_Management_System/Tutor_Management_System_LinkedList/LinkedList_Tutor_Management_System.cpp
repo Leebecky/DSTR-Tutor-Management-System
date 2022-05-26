@@ -90,8 +90,9 @@ int main()
 	int flag = 0;
 	int tutorId = 6;
 	int center_choice, subject_choice, centerCode, subjectCode, hourlyPayRate;
-	string name, dateJoined, phone, address, centerName, subjectName;
+	string name, phone, address, centerName, subjectName;
 	char seperator;
+	time_t dateJoined = time(NULL) - 31536000;
 
 
 
@@ -158,6 +159,7 @@ int main()
 			do
 			{
 				flag = 0;
+				/*
 				string day = to_string(ltm->tm_mday);
 				string month = to_string(1 + ltm->tm_mon);
 				string year = to_string(1900 + ltm->tm_year);
@@ -170,12 +172,13 @@ int main()
 					month = "0" + month;
 				}
 
-				dateJoined = day + "-" + month + "-" + year;
+				dateJoined = day + "-" + month + "-" + year;*/
+
 				while (flag == 0) {
 					flag = 1;
 					cout << "Enter Tutor Name: ";
 					getline(cin, name);
-					if (check_tutorName(name)) { // validation
+					if (check_tutorName(name, head)) { // validation
 						cout << "\nTutor name exists. Please use a different name!\n\n";
 						flag = 0;
 					}
@@ -212,7 +215,7 @@ int main()
 						flag = 0;
 						continue;
 					}
-					if (check_centerName(centerName) >= 10) {
+					if (check_centerName(centerName, head) >= 10) {
 						cout << "\nThe centre is already full!\n";
 						flag = 0;
 					}
@@ -271,13 +274,13 @@ int main()
 						flag = 0;
 					}
 
-					if (check_subjectName(subjectCode, centerCode)) { // validation
-						cout << "One center can only have one subject!\n";
-						flag = 0;
-					}
+					//if (check_subjectName(subjectCode, centerCode, head)) { // validation
+					//	cout << "One center can only have one subject!\n";
+					//	flag = 0;
+					//}
 				}
 
-				Tutor* newnode = CreateNewNnode(tutorId, name, dateJoined, "N/A", phone, address, centerCode, centerName, subjectCode, subjectName, hourlyPayRate, 0);
+				Tutor* newnode = CreateNewNnode(tutorId, name, dateJoined, 0, phone, address, centerCode, centerName, subjectCode, subjectName, hourlyPayRate, 0);
 				Tutor* insertIntoTheEndofList(newnode);
 				tutorId += 1;
 
