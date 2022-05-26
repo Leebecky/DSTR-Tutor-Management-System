@@ -110,7 +110,7 @@ void tutorMenuOptions(string *userRole) {
 	cout << "Please enter the desired menu option: ";
 }
 
-void tutorListMenuControl(int* input, Tutor* head, int* size, int* currentPage, string *userRole)
+void tutorListMenuControl(int* input, Tutor** head, int* size, int* currentPage, string *userRole)
 {
 	int tutorIdSelection = -1, opt = -1;
 	bool  result = false;
@@ -131,7 +131,7 @@ void tutorListMenuControl(int* input, Tutor* head, int* size, int* currentPage, 
 		}
 
 		do {
-			Tutor *data = displayTutorDetails(head, *size, tutorIdSelection);
+			Tutor *data = displayTutorDetails((*head), *size, tutorIdSelection);
 
 			if (!data) {
 				break;
@@ -139,26 +139,26 @@ void tutorListMenuControl(int* input, Tutor* head, int* size, int* currentPage, 
 
 			tutorMenuOptions(userRole);
 			cin >> opt;
-			tutorIdSelection = tutorMenuControl(head, *size, opt, tutorIdSelection);
+			tutorIdSelection = tutorMenuControl((*head), *size, opt, tutorIdSelection);
 		} while (opt > 0);
 		break;
 	case 2:
-		sortByTutorId(head, *size);
+		sortByTutorId((*head), *size);
 		cout << "Sort by Tutor Id" << endl;
 		break;
 	case 3:
-		sortByHourlyPay(head, 0, *size - 1);
+		sortByHourlyPay((*head), 0, *size - 1);
 		cout << "Sort by Pay" << endl;
 		break;
 	case 4:
-		sortByRating(head, 0, *size - 1);
+		sortByRating((*head), 0, *size - 1);
 		cout << "Sort by Rating" << endl;
 		break;
 	case 5:
 		cout << "Enter tutor id: ";
 		cin >> tutorIdSelection;
-		sortByTutorId(head, *size);
-		result = deleteTutor(&head, 0, *size - 1, tutorIdSelection);
+		sortByTutorId((*head), *size);
+		result = deleteTutor(head, 0, *size - 1, tutorIdSelection);
 
 		if (result) {
 			*size = *size - 1;
@@ -474,6 +474,23 @@ void mergeSorting(Tutor* head, int low, int high, int mid) {
 	}
 }
 
+void testDelete(int id, int *currentSize, Tutor **ptr) {
+	for (int i = 0; i < *currentSize; i++)
+	{
+		if ((*ptr + i)->tutorId == id)
+		{
+			Tutor *newArray = new Tutor[*currentSize - 1];
+			std::copy((*ptr), (*ptr) + i, newArray);
+			std::copy((*ptr) + i + 1, (*ptr) + *currentSize, newArray + i);
+			delete[](*ptr);
+			(*ptr) = newArray;
+			*currentSize = *currentSize - 1;
+			break;
+		}
+
+	}
+}
+
 bool deleteTutor(Tutor** head, int low, int size, int tutorId) {
 	int mid, p = 0, high = size;
 	time_t today = time(NULL);
@@ -496,6 +513,8 @@ bool deleteTutor(Tutor** head, int low, int size, int tutorId) {
 				//for (int i = mid; i < size; i++) {
 				//	head[i] = head[i + 1];
 				//}
+
+				//testDelete(tutorId, &size, head);
 
 				Tutor *newArray = new Tutor[size];
 				std::copy((*head), (*head) + mid, newArray);

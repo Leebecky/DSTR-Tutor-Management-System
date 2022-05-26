@@ -37,7 +37,7 @@ void definedTutor(Tutor* head);	// Predefined Tutors
 bool login(string *userRole);
 void mainMenu(); // Main Menu
 void tutorListMenu(string *userRole, Tutor* ptr, int* size, int* currentPage); // Main Menu > Display All Tutor
-void tutorListMenuControl(int* input, Tutor* head, int* size, int* currentPage, string *userRole); //Tutor List Menu Control
+void tutorListMenuControl(int* input, Tutor** head, int* size, int* currentPage, string *userRole); //Tutor List Menu Control
 void tutorMenuOptions(string *userRole);
 int tutorMenuControl(Tutor *head, int size, int menuSelection, int tutorId);
 void logToFile(string data);

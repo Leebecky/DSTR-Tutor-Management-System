@@ -67,7 +67,7 @@ int main()
 					goto resetDisplayMenu;
 				}
 
-				tutorListMenuControl(&tutorMenu, ptr, &size, &currentPage, &userRole);
+				tutorListMenuControl(&tutorMenu, &ptr, &size, &currentPage, &userRole);
 
 				cout << endl;
 			} while (tutorMenu > 0);
