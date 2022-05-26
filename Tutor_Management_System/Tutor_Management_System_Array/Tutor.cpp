@@ -474,23 +474,6 @@ void mergeSorting(Tutor* head, int low, int high, int mid) {
 	}
 }
 
-void testDelete(int id, int *currentSize, Tutor **ptr) {
-	for (int i = 0; i < *currentSize; i++)
-	{
-		if ((*ptr + i)->tutorId == id)
-		{
-			Tutor *newArray = new Tutor[*currentSize - 1];
-			std::copy((*ptr), (*ptr) + i, newArray);
-			std::copy((*ptr) + i + 1, (*ptr) + *currentSize, newArray + i);
-			delete[](*ptr);
-			(*ptr) = newArray;
-			*currentSize = *currentSize - 1;
-			break;
-		}
-
-	}
-}
-
 bool deleteTutor(Tutor** head, int low, int size, int tutorId) {
 	int mid, p = 0, high = size;
 	time_t today = time(NULL);
@@ -510,12 +493,6 @@ bool deleteTutor(Tutor** head, int low, int size, int tutorId) {
 				return false;
 			}
 			else {
-				//for (int i = mid; i < size; i++) {
-				//	head[i] = head[i + 1];
-				//}
-
-				//testDelete(tutorId, &size, head);
-
 				Tutor *newArray = new Tutor[size];
 				std::copy((*head), (*head) + mid, newArray);
 				std::copy((*head) + mid + 1, (*head) + size + 1, newArray + mid);
