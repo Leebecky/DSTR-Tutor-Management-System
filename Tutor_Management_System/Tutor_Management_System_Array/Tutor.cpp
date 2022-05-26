@@ -444,15 +444,15 @@ void addTutor(Tutor ** head, int* size)
 	cout << "Name: ";
 	cin >> name; cout << endl;
 	
-	cout << "Hourly Pay Rate: ";
-	cin >> hourlyPayRate; cout << endl;
-	//Input validation
-	while (!(hourlyPayRate >= 40 && hourlyPayRate <= 80))
-	{
-		cout << "Invalid Input. Try Again." << endl;
-		cout << "Enter a Rate from 40.00 - 80.00: ";
-		cin >> hourlyPayRate; cout << endl;
-	}
+	//cout << "Hourly Pay Rate: ";
+	//cin >> hourlyPayRate; cout << endl;
+	////Input validation
+	//while (!(hourlyPayRate >= 40 && hourlyPayRate <= 80))
+	//{
+	//	cout << "Invalid Input. Try Again." << endl;
+	//	cout << "Enter a Rate from 40.00 - 80.00: ";
+	//	cin >> hourlyPayRate; cout << endl;
+	//}
 
 	cout << "Phone: ";
 	cin >> phone; cout << endl;
@@ -460,6 +460,10 @@ void addTutor(Tutor ** head, int* size)
 	cout << "Address: ";
 	cin >> address; cout << endl;
 
+	cout << "Select a center" << endl;
+	cout << "1 - Pusat Asia Jaya" << endl;
+	cout << "2 - Pusat Megah Jaya" << endl;
+	cout << "3 - Pusat Suru Jaya" << endl;
 	cout << "Center Code: ";
 	cin >> centerCode; cout << endl;
 	switch (centerCode)
@@ -477,39 +481,60 @@ void addTutor(Tutor ** head, int* size)
 		isValid = false;
 	}
 
+	cout << "Select a subject" << endl;
+	cout << "1 - Bahasa Melayu" << endl;
+	cout << "2 - English" << endl;
+	cout << "3 - Sejarah" << endl;
+	cout << "4 - Geografi" << endl;
+	cout << "5 - Biology" << endl;
+	cout << "6 - Accounts" << endl;
+	cout << "7 - Physics" << endl;
+	cout << "8 - Chemistry" << endl;
+	cout << "9 - Mathematics" << endl;
+	cout << "10 - Additional Mathematics" << endl;
 	cout << "Subject Code: ";
 	cin >> subjectCode; cout << endl;
 	switch (subjectCode)
 	{
 	case 1:
 		subjectName = "Bahasa Melayu";
+		hourlyPayRate = 40;
 		break;
 	case 2:
 		subjectName = "English";
+		hourlyPayRate = 45;
 		break;
 	case 3:
 		subjectName = "Sejarah";
+		hourlyPayRate = 50;
 		break;
 	case 4:
 		subjectName = "Geografi";
+		hourlyPayRate = 50;
 		break;
 	case 5:
 		subjectName = "Biology";
+		hourlyPayRate = 60;
 		break;
 	case 6:
 		subjectName = "Accounts";
+		hourlyPayRate = 65;
 		break;
 	case 7:
 		subjectName = "Physics";
+		hourlyPayRate = 70;
 		break;
 	case 8:
 		subjectName = "Chemistry";
+		hourlyPayRate = 70;
 		break;
 	case 9:
 		subjectName = "Mathematics";
+		hourlyPayRate = 65;
 		break;
 	case 10:
 		subjectName = "Additional Mathematics";
+		hourlyPayRate = 80;
 		break;
 	default:
 		isValid = false;
