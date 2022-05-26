@@ -45,7 +45,7 @@ void logToFile(string data);
 Tutor *displayTutorDetails(Tutor *head, int size, int tutorId);
 void displayTutorList(Tutor* head, int size, int* currentPage); //Displays the list of all tutors
 
-void addTutor(Tutor* head, Tutor* newData); //Adds a new tutor to the list
+void addTutor(Tutor** head, int* size); //Adds a new tutor to the list
 bool modifyTutor(Tutor *data, string *dataValue, string updateAttribute); //Updates the tutor record
 bool deleteTutor(Tutor** head, int low, int size, int tutorId); //Deletes the selected tutor and returns True/False to indicate success
 
@@ -64,8 +64,8 @@ void mergeSorting(Tutor* head, int low, int high, int mid); // MergeSort functio
 SEARCHING FUNCTIONS
 ===========================================================
 */
-//Tutor* searchByTutorId(Tutor* head, int tutorId) {} //Search for a tutor by tutor id
-//Tutor* searchhByRating(Tutor* head, int rating) {} //Search for a tutor by rating
 
-Tutor *binarySearchTutorId(Tutor* head, int size, int tutorId);
+Tutor *binarySearchTutorId(Tutor* head, int size, int tutorId); //Search tutor record by IF
 int binarySearchTutorIndex(Tutor* head, int size, int tutorId);
+
+void SearchByRating(Tutor* head, int rating, int size); // Search/filter tutor(s) by rating
