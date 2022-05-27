@@ -16,7 +16,6 @@ Password: Hr123
 
 
 #include "Tutor.h"
-#pragma warning(disable : 4996)
 
 int main()
 {

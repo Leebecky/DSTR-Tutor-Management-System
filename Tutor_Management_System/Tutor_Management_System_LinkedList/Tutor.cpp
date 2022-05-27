@@ -35,9 +35,7 @@ bool login(string *userRole) {
 // Log to File
 void logToFile(string data) {
 	ofstream logFile("Tutor System Log - Linked List.txt", ios_base::app | ios_base::out);
-
 	logFile << data << endl;
-
 }
 
 
@@ -55,7 +53,7 @@ void generateData(Tutor **head, Tutor** tail, int* tutorListCount) {
 	Tutor *data5 = new Tutor(5, "Nurul Syafiqah", dateJoined, 62.00, "011-845656455", "65, Jalan M1, Taman Mega, 68000 Ampang, Selangor", 1, "Pusat Asia Jaya", 4, "Geografi", 2, outsideMonths);
 	Tutor *data6 = new Tutor(6, "Maggie Simon", dateJoined, 58.00, "011-57457823", "11, Jalan M1, Taman Mega, 68000 Ampang, Selangor", 2, "Pusat Megah Jaya", 9, "Mathematics", 2, withinMonths);
 	Tutor *data7 = new Tutor(7, "Ai Ling Tan", dateJoined, 78.50, "015-123434656", "65, Jalan M1, Taman Mega, 68000 Ampang, Selangor", 2, "Pusat Megah Jaya", 10, "Additional Mathematics", 5, 0);
-	Tutor *data8 = new Tutor(8, "Diviya Nathan", dateJoined, 50.00, "011-958567555", "561, Jalan Sinar 1, Taman Sinar, 68000 Ampang, Selangor", 2, "Pusat Megah Jaya", 2, "English", 1, outsideMonths);
+	Tutor *data8 = new Tutor(8, "Diviya Nathan", dateJoined, 50.00, "011-958567555", "561, Jalan Sinar 1, Taman Sinar, 68000 Ampang, Selangor", 2, "Pusat Megah Jaya", 2, "English", 1, withinMonths);
 	Tutor *data9 = new Tutor(9, "Daryl Arul", dateJoined, 80.00, "016-98653544", "17, Jalan M2, Taman Mega, 68000 Ampang, Selangor", 2, "Pusat Megah Jaya", 8, "Chemistry", 2, 0);
 	Tutor *data10 = new Tutor(10, "Suhaimi bin Suhakam", dateJoined, 64.00, "011-845656455", "65, Jalan M1, Taman Mega, 68000 Ampang, Selangor", 2, "Pusat Megah Jaya", 7, "Physics", 5, 0);
 	Tutor *data11 = new Tutor(11, "Paula Maruice", dateJoined, 62.00, "016-45452777", "67, Jalan Bkt Utama, Taman Bukit, 68000 Ampang, Selangor", 3, "Pusat Suru Jaya", 4, "Geografi", 4, withinMonths);
@@ -186,6 +184,7 @@ void tutorListMenu(string *userRole)
 // Single Tutor View Menu
 void tutorMenuOptions(string *userRole) {
 	int menuSelection = -1;
+	cout << "Tutor Record:" << endl;
 	if (*userRole == "HR") {
 		cout << "1. Modify Address" << endl;
 		cout << "2. Modify Phone Number" << endl;
@@ -289,7 +288,7 @@ int tutorMenuControl(Tutor *head, Tutor *tail, int size, int menuSelection, int 
 
 	switch (menuSelection) {
 
-	case 1:
+	case 1: // modify address
 		cout << "Enter the address: ";
 		cin.ignore();
 		getline(cin, dataValue);
@@ -300,7 +299,7 @@ int tutorMenuControl(Tutor *head, Tutor *tail, int size, int menuSelection, int 
 		}
 
 		return data->tutorId;
-	case 2:
+	case 2: // modify phone number
 		cout << "Enter the phone number: ";
 		cin.ignore();
 		getline(cin, dataValue);
@@ -311,12 +310,12 @@ int tutorMenuControl(Tutor *head, Tutor *tail, int size, int menuSelection, int 
 		}
 
 		return data->tutorId;
-	case 3:
+	case 3: // Next record
 		if (data->next == NULL) { // if end of list, skip back to front
 			return head->tutorId;
 		}
 		return data->next->tutorId;
-	case 4:
+	case 4: // Previous Record
 		if (data->prev == NULL) { // If start of list, skip to end
 			return tail->tutorId;
 		}
@@ -400,6 +399,54 @@ void displayTutorList(Tutor* head, int size, int* currentPage) {
 	}
 
 	cout << "\nPage  " << *currentPage << " / " << maxPage << endl;
+}
+
+
+// Display the details of an individual record
+Tutor *displayTutorDetails(Tutor *head, int size, int tutorId) {
+	Tutor *data = binarySearchTutorId(head, size, tutorId);
+	tm *dateTerminated, *dateJoined;
+
+	// if record not found
+	if (!data) {
+		cout << endl << "Tutor not found." << endl << endl;
+		return NULL;
+	}
+
+	cout << endl << "=================================================================" << endl;
+	cout << "\t#" << data->tutorId << "\t" << data->name << endl;
+	cout << "=================================================================" << endl;
+	cout << "Address: \t" << data->address << endl;
+	cout << "Phone Number: \t" << data->phone << endl;
+	cout << "Rating: \t" << data->rating << endl;
+	cout << "Hourly Pay Rate:" << data->hourlyPayRate << endl;
+
+	// Date Joined
+	dateJoined = localtime(&(data)->dateJoined);
+	if (dateJoined->tm_year + 1900 == 1970) {
+		cout << "Date Joined: \t- " << endl;
+	}
+	else {
+		cout << "Date Joined: \t" << dateJoined->tm_year + 1900 << "-" << dateJoined->tm_mon + 1 << "-" << dateJoined->tm_mday << endl;
+	}
+
+	cout << "Center Code: \t" << data->centerCode << endl;
+	cout << "Center Name: \t" << data->centerName << endl;
+	cout << "Subject Code: \t" << data->subjectCode << endl;
+	cout << "Subject Name: \t" << data->subjectName << endl;
+
+	// Date Terminated
+	dateTerminated = localtime(&(data)->dateTerminated);
+	if (dateTerminated->tm_year + 1900 == 1970) {
+		cout << "Date Terminated: - " << endl;
+	}
+	else {
+		cout << "Date Terminated: " << dateTerminated->tm_year + 1900 << "-" << dateTerminated->tm_mon + 1 << "-" << dateTerminated->tm_mday << endl;
+	}
+
+	cout << "=================================================================" << endl << endl;
+
+	return data;
 }
 
 /*
@@ -507,7 +554,7 @@ resetAddressInput: // Address
 	flag = 0;
 
 	while (flag == 0) { // Center Selection
-		cout << endl << "Choose a center: \n 1- Pusat Asia Jaya \n 2- Pusat Megah Jaya \n 3- Pusat Suru Jaya\n\nEnter your choice: ";
+		cout << endl << "Select a center: \n 1- Pusat Asia Jaya \n 2- Pusat Megah Jaya \n 3- Pusat Suru Jaya\n\Center Code: ";
 		cin >> centerChoice;
 
 		// Input validation
@@ -536,6 +583,7 @@ resetAddressInput: // Address
 			flag = 0;
 			continue;
 		}
+		
 		if (checkCenterCount(centerCode, *head)) {
 			cout << endl << "The centre is already full!" << endl;
 			flag = 0;
@@ -545,7 +593,7 @@ resetAddressInput: // Address
 
 resetSubjectSelection: // Subject Selection + Hourly Pay Rate
 
-	cout << endl << "Choose a subject: " << endl;
+	cout << endl << "Select a subject: " << endl;
 	cout << "1- Bahasa Melayu\t\t| RM 45.00" << endl;
 	cout << "2- English\t\t\t| RM 50.00" << endl;
 	cout << "3- Sejarah\t\t\t| RM 65.00" << endl;
@@ -556,7 +604,7 @@ resetSubjectSelection: // Subject Selection + Hourly Pay Rate
 	cout << "8- Chemistry\t\t\t| RM 80.00" << endl;
 	cout << "9- Mathematics\t\t\t| RM 58.00" << endl;
 	cout << "10- Additional Mathematics\t| RM 78.50" << endl;
-	cout << "Enter your choice: ";
+	cout << "Subject Code: ";
 
 	cin >> subject_choice;
 	subjectCode = subject_choice;
@@ -646,54 +694,6 @@ void insertIntoTheEndofList(Tutor *newNode, Tutor** head, Tutor** tail, int *tut
 	*tutorListCount = *tutorListCount + 1;
 }
 
-
-
-// Display the details of an individual record
-Tutor *displayTutorDetails(Tutor *head, int size, int tutorId) {
-	Tutor *data = binarySearchTutorId(head, size, tutorId);
-	tm *dateTerminated, *dateJoined;
-
-	// if record not found
-	if (!data) {
-		cout << endl << "Tutor not found." << endl << endl;
-		return NULL;
-	}
-
-	cout << endl << "=================================================================" << endl;
-	cout << "\t#" << data->tutorId << "\t" << data->name << endl;
-	cout << "=================================================================" << endl;
-	cout << "Address: \t" << data->address << endl;
-	cout << "Phone Number: \t" << data->phone << endl;
-	cout << "Rating: \t" << data->rating << endl;
-	cout << "Hourly Pay Rate:" << data->hourlyPayRate << endl;
-
-	// Date Joined
-	dateJoined = localtime(&(data)->dateJoined);
-	if (dateJoined->tm_year + 1900 == 1970) {
-		cout << "Date Joined: \t- " << endl;
-	}
-	else {
-		cout << "Date Joined: \t" << dateJoined->tm_year + 1900 << "-" << dateJoined->tm_mon + 1 << "-" << dateJoined->tm_mday << endl;
-	}
-
-	cout << "Center Code: \t" << data->centerCode << endl;
-	cout << "Center Name: \t" << data->centerName << endl;
-	cout << "Subject Code: \t" << data->subjectCode << endl;
-	cout << "Subject Name: \t" << data->subjectName << endl;
-
-	// Date Terminated
-	dateTerminated = localtime(&(data)->dateTerminated);
-	if (dateTerminated->tm_year + 1900 == 1970) {
-		cout << "Date Terminated: - " << endl;
-	}
-	else {
-		cout << "Date Terminated: " << dateTerminated->tm_year + 1900 << "-" << dateTerminated->tm_mon + 1 << "-" << dateTerminated->tm_mday << endl;
-	}
-
-	cout << "=================================================================" << endl << endl;
-
-	return data;
-}
 
 
 // Delete Tutor - Binary Search
