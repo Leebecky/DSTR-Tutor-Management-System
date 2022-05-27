@@ -1,5 +1,19 @@
-// Tutor_Management_System.cpp : This file contains the 'main' function. Program execution begins and ends there.
-//
+/*
+Tutor_Management_System_LinkedList
+===========================================================
+LOGIN CREDENTIALS
+===========================================================
+
+Role: Admin
+Username: Admin
+Password: Admin123
+
+Role: Hr manager
+Username: Hr
+Password: Hr123
+
+*/
+
 
 #include "Tutor.h"
 
@@ -14,7 +28,6 @@ int main()
 
 	//Variables
 	int menuInput = -1;
-	//Tutor tutor[15];
 	Tutor* ptr = new Tutor[15];
 	int size = 15;
 	int currentPage = 1;
@@ -22,24 +35,24 @@ int main()
 	int tutorIdSelection = -1, opt = -1;
 	bool  result = false;
 
-	string userRole = "Admin";
+	string userRole = "";
 	bool auth = false;
 
 	cout << "Tutor Array System: " << timeStamp << endl;
 	cout << "Please login..." << endl;
-	cout << "Login is currently disabled...";
-	/*do {
+	//cout << "Login is currently disabled...";
+	do {
 		auth = login(&userRole);
-	} while (!auth);*/
+	} while (!auth);
 
 	cout << "Welcome, " << userRole << ". Hit Enter to proceed" << endl;
-
+	generateData(ptr);
 	cin.get();
 
 	do
 	{
-	menuReset: 
-		definedTutor(ptr);
+	menuReset:
+
 		mainMenu();
 		cin >> menuInput;
 
@@ -47,14 +60,14 @@ int main()
 		if (cin.fail()) {
 			cin.clear();
 			cin.ignore(numeric_limits<streamsize>::max(), '\n');
-			cout << endl << "Invalid input. Please provide a valid id" << endl;
+			cout << endl << "Invalid input. Please select a valid option" << endl;
 			goto menuReset;
 		}
 
 		int tutorMenu = -1;
 		switch (menuInput)
 		{
-		case 1:
+		case 1: // View all Tutors
 		resetDisplayMenu:
 			cout << endl;
 			do
@@ -76,13 +89,13 @@ int main()
 			} while (tutorMenu > 0);
 
 			break;
-		case 2:
-			cout << "Add New Tutor" << endl;
+		case 2: // Add new tutor
+			cout << endl << "Add New Tutor" << endl;
 			addTutor(&ptr, &size);
 			break;
-		case 3:
+		case 3: // Search by Id
 		resetTutorView:
-			
+
 			cout << "Search ID" << endl;
 			cout << "Enter tutor id: ";
 			cin >> tutorIdSelection;
@@ -107,7 +120,7 @@ int main()
 				tutorIdSelection = tutorMenuControl(ptr, size, opt, tutorIdSelection);
 			} while (opt > 0);
 			break;
-		case 4:
+		case 4: // Search by Rating
 			cout << "Search Rating" << endl;
 			cout << "Enter rating: ";
 			cin >> rating;
