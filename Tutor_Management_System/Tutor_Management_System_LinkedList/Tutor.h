@@ -1,4 +1,5 @@
 #pragma once
+
 #include <iomanip>
 #include<string>
 #include<ctime>
@@ -33,28 +34,6 @@ public: //Constructor
 	Tutor();
 	Tutor(int tutorId, string name, time_t dateJoined, double hourlyPayRate, string phone, string address, int centerCode, string centreName, int subjectCode, string subjectName, int rating, time_t dateTerminated); //Base constructor
 };
-
-Tutor* CreateNewNnode(int tutorId, string name, time_t dateJoined, time_t dateTerminated, string phone, string address, int centerCode, string centerName, int subjectCode, string subjectName, int hourlyPayRate, int rating) //create a newnode - use for any insert
-{
-	Tutor* newnode = new Tutor;
-	newnode->tutorId = tutorId;
-	newnode->name = name;
-	newnode->dateJoined = dateJoined;
-	newnode->dateTerminated = dateTerminated;
-	newnode->hourlyPayRate = hourlyPayRate;
-	newnode->phone = phone;
-	newnode->address = address;
-	newnode->centerCode = centerCode;
-	newnode->centerName = centerName;
-	newnode->subjectCode = subjectCode;
-	newnode->subjectName = subjectName;
-	newnode->rating = rating;
-	newnode->next = NULL;
-	newnode->prev = NULL;
-
-	return newnode;
-}
-
 
 /*
 ===========================================================
@@ -93,7 +72,10 @@ DATA CONTROL FUNCTIONS
 ===========================================================
 */
 
-//void addTutor(Tutor* head, Tutor* newData); //Adds a new tutor to the list
+void addTutor(Tutor **head, Tutor **tail, int *tutorListCount); //Adds a new tutor to the list
+
+void insertIntoTheEndofList(Tutor* newNode, Tutor** head, Tutor** tail, int *tutorListCount);
+
 bool modifyTutor(Tutor *data, string *dataValue, string updateAttribute); //Updates the tutor record
 bool deleteTutor(Tutor** head, Tutor  **tail, int size, int tutorId); //Deletes the selected tutor and returns True/False to indicate success
 
@@ -120,6 +102,5 @@ SEARCHING FUNCTIONS
 ===========================================================
 */
 Tutor *binarySearchTutorId(Tutor* head, int size, int tutorId);
-
-//Tutor* searchByTutorId(Tutor* head, int tutorId) {} //Search for a tutor by tutor id
-//Tutor* searchhByRating(Tutor* head, int rating) {} //Search for a tutor by rating
+void searchByTutorId(Tutor *head, Tutor *tail, int *tutorListSize, string *userRole); //Search for a tutor by tutor id
+void searchByTutorRating(Tutor *head, int *tutorListSize); //Search for a tutor by rating
