@@ -117,7 +117,7 @@ int main()
 
 				tutorMenuOptions(&userRole);
 				cin >> opt;
-				tutorIdSelection = tutorMenuControl(ptr, size, opt, tutorIdSelection);
+				tutorIdSelection = tutorMenuControl(ptr, size, opt, tutorIdSelection, &userRole);
 			} while (opt > 0);
 			break;
 		case 4: // Search by Rating
