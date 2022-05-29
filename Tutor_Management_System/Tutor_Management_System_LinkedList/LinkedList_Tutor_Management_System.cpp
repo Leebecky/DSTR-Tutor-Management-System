@@ -107,7 +107,8 @@ int main()
 			break;
 		case 0: // Exit
 			cout << endl << "System closing. Please wait..." << endl;
-			cout << "Thank you, have a nice day!" << endl;
+			cout << "Thank you, have a nice day!" << endl << endl;
+			break;
 		default:
 			cout << endl << "No corresponding option" << endl;
 			break;

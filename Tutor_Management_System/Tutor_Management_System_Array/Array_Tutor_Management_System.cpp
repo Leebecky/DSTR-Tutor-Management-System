@@ -126,6 +126,10 @@ int main()
 			cin >> rating;
 			SearchByRating(ptr, rating, size);
 			break;
+		case 0:
+			cout << endl << "System closing. Please wait..." << endl;
+			cout << "Thank you, have a nice day!" << endl << endl;
+			break;
 		default:
 			break;
 		}

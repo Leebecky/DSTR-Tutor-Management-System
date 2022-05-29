@@ -785,11 +785,19 @@ SEARCH FUNCTIONS
 // Binary Search
 Tutor* binarySearchTutorId(Tutor* head, int size, int tutorId) {
 	int low = 0, mid, high = size;
+	std::chrono::time_point<std::chrono::steady_clock> startTime, endTime;
+	std::chrono::microseconds duration;
+
+	startTime = high_resolution_clock::now();
 
 	while (low <= high) {
 		mid = (low + high) / 2;
 
 		if (tutorId == (head + mid)->tutorId) {
+			endTime = high_resolution_clock::now();
+			duration = duration_cast<microseconds>(endTime - startTime);
+			logToFile("Binary Search: " + to_string(duration.count()) + " microseconds");
+
 			return (head + mid);
 		}
 		else {
@@ -801,6 +809,10 @@ Tutor* binarySearchTutorId(Tutor* head, int size, int tutorId) {
 			}
 		}
 	}
+
+	endTime = high_resolution_clock::now();
+	duration = duration_cast<microseconds>(endTime - startTime);
+	logToFile("Binary Search: " + to_string(duration.count()) + " microseconds");
 
 	return NULL;
 }
@@ -831,6 +843,10 @@ int binarySearchTutorIndex(Tutor* head, int size, int tutorId) {
 // Search by Tutor Rating - Linear Search
 void SearchByRating(Tutor* head, int rating, int size) {
 	tm* dateTerminated;
+
+	std::chrono::time_point<std::chrono::steady_clock> startTime, endTime;
+	std::chrono::microseconds duration;
+
 	cout << " Id" << "\t| ";
 	cout << setw(30) << left << "Tutor Name" << " | ";
 	cout << "Pay Rate" << "\t| ";
@@ -841,7 +857,10 @@ void SearchByRating(Tutor* head, int rating, int size) {
 	for (int i = 0; i < 120; i++) {
 		cout << "=";
 	}
-	cout << endl;
+
+
+	// Linear Search for Rating
+	startTime = high_resolution_clock::now();
 	for (int i = 0; i < size; i++)
 	{
 		if ((head + i)->rating == rating) {
@@ -859,8 +878,14 @@ void SearchByRating(Tutor* head, int rating, int size) {
 			else {
 				cout << dateTerminated->tm_year + 1900 << "-" << dateTerminated->tm_mon + 1 << "-" << dateTerminated->tm_mday << endl;
 			}
+
+			break;
 		}
 	}
+
+	endTime = high_resolution_clock::now();
+	duration = duration_cast<microseconds>(endTime - startTime);
+	logToFile("Linear Search: " + to_string(duration.count()) + " microseconds");
 }
 
 
