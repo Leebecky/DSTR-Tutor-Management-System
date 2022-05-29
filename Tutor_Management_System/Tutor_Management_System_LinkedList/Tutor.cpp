@@ -225,7 +225,7 @@ void tutorListMenuControl(int* input, Tutor** head, Tutor** tail, int *tutorList
 
 			tutorMenuOptions(userRole);
 			cin >> opt;
-			tutorIdSelection = tutorMenuControl((*head), (*tail), *tutorListCount, opt, tutorIdSelection);
+			tutorIdSelection = tutorMenuControl((*head), (*tail), *tutorListCount, opt, tutorIdSelection, userRole);
 		} while (opt > 0);
 		break;
 	case 2:
@@ -260,6 +260,10 @@ void tutorListMenuControl(int* input, Tutor** head, Tutor** tail, int *tutorList
 		logToFile("Merge Sort: " + to_string(duration.count()) + " microseconds");
 		break;
 	case 5:
+		if (*userRole != "HR") { // Only HR allowed to delete
+			break;
+		}
+
 	resetInput:
 		cout << "Enter tutor id: ";
 		cin >> tutorIdSelection;
@@ -293,7 +297,7 @@ void tutorListMenuControl(int* input, Tutor** head, Tutor** tail, int *tutorList
 }
 
 // Single Tutor View Menu Control
-int tutorMenuControl(Tutor *head, Tutor *tail, int size, int menuSelection, int tutorId) {
+int tutorMenuControl(Tutor *head, Tutor *tail, int size, int menuSelection, int tutorId, string *userRole) {
 	string dataValue = "";
 	bool result = false;
 
@@ -308,6 +312,10 @@ int tutorMenuControl(Tutor *head, Tutor *tail, int size, int menuSelection, int 
 	switch (menuSelection) {
 
 	case 1: // modify address
+		if (*userRole != "HR") { // Only HR allowed to modifiy
+			return data->tutorId;
+		}
+
 		cout << "Enter the address: ";
 		cin.ignore();
 		getline(cin, dataValue);
@@ -319,6 +327,10 @@ int tutorMenuControl(Tutor *head, Tutor *tail, int size, int menuSelection, int 
 
 		return data->tutorId;
 	case 2: // modify phone number
+		if (*userRole != "HR") { // Only HR allowed to modifiy
+			return data->tutorId;
+		}
+
 		cout << "Enter the phone number: ";
 		cin.ignore();
 		getline(cin, dataValue);
@@ -872,7 +884,7 @@ resetTutorIdSearch:
 
 		tutorMenuOptions(userRole);
 		cin >> opt;
-		tutorId = tutorMenuControl(head, tail, *tutorListSize, opt, tutorId);
+		tutorId = tutorMenuControl(head, tail, *tutorListSize, opt, tutorId, userRole);
 	} while (opt > 0);
 }
 
