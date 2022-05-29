@@ -138,8 +138,6 @@ Tutor::Tutor(int tutorId, string name, time_t dateJoined, double hourlyPayRate, 
 	this->subjectName = subjectName;
 	this->rating = rating;
 	this->dateTerminated = dateTerminated;
-
-	Tutor* nextAddress;
 }
 
 /*
@@ -200,7 +198,8 @@ void tutorListMenuControl(int* input, Tutor** head, Tutor** tail, int *tutorList
 {
 	int tutorIdSelection = -1, opt = -1;
 	bool  result = false;
-
+	std::chrono::time_point<std::chrono::steady_clock> startTime, endTime;
+	std::chrono::microseconds duration;
 	switch (*input)
 	{
 	case 1:
@@ -216,6 +215,7 @@ void tutorListMenuControl(int* input, Tutor** head, Tutor** tail, int *tutorList
 			goto resetTutorView;
 		}
 
+		sortByTutorId(head, tail, tutorListCount);
 		do {
 			Tutor *data = displayTutorDetails((*head), *tutorListCount, tutorIdSelection);
 
@@ -230,15 +230,34 @@ void tutorListMenuControl(int* input, Tutor** head, Tutor** tail, int *tutorList
 		break;
 	case 2:
 		cout << "Sort by Tutor Id" << endl;
+
+		startTime = high_resolution_clock::now();
+
 		sortByTutorId(head, tail, tutorListCount);
+
+		endTime = high_resolution_clock::now();
+		duration = duration_cast<microseconds>(endTime - startTime);
+		logToFile("Bubble Sort: " + to_string(duration.count()) + " microseconds");
 		break;
 	case 3:
 		cout << "Sort by Pay" << endl;
+
+		startTime = high_resolution_clock::now();
 		sortByHourlyPay(head, tail);
+
+		endTime = high_resolution_clock::now();
+		duration = duration_cast<microseconds>(endTime - startTime);
+		logToFile("Quick Sort: " + to_string(duration.count()) + " microseconds");
 		break;
 	case 4:
 		cout << "Sort by Rating" << endl;
+
+		startTime = high_resolution_clock::now();
 		sortByRating(head, tail);
+
+		endTime = high_resolution_clock::now();
+		duration = duration_cast<microseconds>(endTime - startTime);
+		logToFile("Merge Sort: " + to_string(duration.count()) + " microseconds");
 		break;
 	case 5:
 	resetInput:
@@ -395,6 +414,9 @@ void displayTutorList(Tutor* head, int size, int* currentPage) {
 		}
 
 		temp = temp->next;
+		if (temp == NULL) {
+			break;
+		}
 
 	}
 
@@ -497,7 +519,8 @@ bool checkCenterCount(int centerCode, Tutor* head)
 void addTutor(Tutor **head, Tutor **tail, int *tutorListCount) {
 
 	int flag = 0, tutorId = 0;
-	int centerChoice, subject_choice, centerCode, subjectCode, hourlyPayRate;
+	int centerChoice, subject_choice, centerCode, subjectCode;
+	double hourlyPayRate;
 	string name, phone, address, centerName, subjectName;
 	time_t dateJoined = time(NULL) - 31536000;
 
@@ -554,7 +577,7 @@ resetAddressInput: // Address
 	flag = 0;
 
 	while (flag == 0) { // Center Selection
-		cout << endl << "Select a center: \n 1- Pusat Asia Jaya \n 2- Pusat Megah Jaya \n 3- Pusat Suru Jaya\n\Center Code: ";
+		cout << endl << "Select a center: \n 1- Pusat Asia Jaya \n 2- Pusat Megah Jaya \n 3- Pusat Suru Jaya\nCenter Code: ";
 		cin >> centerChoice;
 
 		// Input validation
@@ -579,7 +602,7 @@ resetAddressInput: // Address
 			flag = 1;
 		}
 		else {
-			cout << endl << "Centre does not exist" << endl << endl;
+			cout << endl << "Centre does not exist" << endl;
 			flag = 0;
 			continue;
 		}
@@ -742,6 +765,7 @@ bool deleteTutor(Tutor** head, Tutor **tail, int size, int tutorId) {
 			return true;
 		}
 	}
+	return false;
 }
 
 // Modify Tutor Record
@@ -769,10 +793,8 @@ SORTING FUNCTIONS
 ===========================================================================
 */
 
-//Bubble Sort - Sort tutor list by Tutor Id
+//Bubble Sort - Sort tutor list by Tutor IdHr
 void sortByTutorId(Tutor **head, Tutor **tail, int *count) {
-	auto startTime = high_resolution_clock::now();
-
 	Tutor **temp = head;
 
 	for (int i = 0; i < *count; i++) {
@@ -796,39 +818,25 @@ void sortByTutorId(Tutor **head, Tutor **tail, int *count) {
 		}
 
 		//Break the outer loop if no swap happens
-		if (!swapped) {
+		if (!swapped and (*temp != *head)) {
 			break;
 		}
 	}
 	*tail = getTail(*temp);
 
-	auto endTime = high_resolution_clock::now();
-	auto duration = duration_cast<microseconds>(endTime - startTime);
-	logToFile("Bubble Sort: " + to_string(duration.count()) + " microseconds");
-
 }
 
 // Quicksort - Sort by Hourly Pay
 void sortByHourlyPay(Tutor** head, Tutor **tail) {
-	auto startTime = high_resolution_clock::now();
 	(*head) = quickSortRecur((*head), (*tail));
+	(*head)->prev = NULL;
 	(*tail) = getTail(*head);
-
-	auto endTime = high_resolution_clock::now();
-	auto duration = duration_cast<microseconds>(endTime - startTime);
-	logToFile("QuickSort: " + to_string(duration.count()) + " microseconds");
 }
 
 // Merge Sort - Sort by Tutor Rating
 void sortByRating(Tutor **head, Tutor **tail) {
-	auto startTime = high_resolution_clock::now();
-
 	MergeSort(head);
 	*tail = getTail(*head);
-
-	auto endTime = high_resolution_clock::now();
-	auto duration = duration_cast<microseconds>(endTime - startTime);
-	logToFile("Merge Sort: " + to_string(duration.count()) + " microseconds");
 }
 
 
@@ -841,6 +849,7 @@ SEARCH FUNCTIONS
 // Search by Tutor Id - Binary Search
 void searchByTutorId(Tutor *head, Tutor *tail, int *tutorListSize, string *userRole) {
 	int tutorId = -1, opt = -1;
+
 resetTutorIdSearch:
 
 	cout << "Enter tutor id: ";
@@ -871,6 +880,10 @@ resetTutorIdSearch:
 // Search by Tutor Rating - Linear Search
 void searchByTutorRating(Tutor *head, int *tutorListSize) {
 	int tutorRating = -1, opt = -1;
+
+	std::chrono::time_point<std::chrono::steady_clock> startTime, endTime;
+	std::chrono::microseconds duration;	
+
 resetTutorRatingSearch:
 
 	cout << "Enter tutor rating: ";
@@ -902,6 +915,7 @@ resetTutorRatingSearch:
 	}
 
 	// Linear Search for Rating
+	startTime = high_resolution_clock::now();
 	while (temp != NULL) {
 
 		if (temp->rating == tutorRating) {
@@ -920,11 +934,15 @@ resetTutorRatingSearch:
 			else {
 				cout << dateTerminated->tm_year + 1900 << "-" << dateTerminated->tm_mon + 1 << "-" << dateTerminated->tm_mday << endl;
 			}
+	
 		}
 
 		temp = temp->next;
 	}
-	cout << endl;
+	endTime = high_resolution_clock::now();
+	duration = duration_cast<microseconds>(endTime - startTime);
+	logToFile("Linear Search: " + to_string(duration.count()) + " microseconds");
+	
 }
 
 
@@ -937,8 +955,12 @@ UTILITY FUNCTIONS FOR SORTING/BINARY SEARCH
 // Binary Search
 Tutor *binarySearchTutorId(Tutor* head, int size, int tutorId) {
 	int low = 1, mid, high = size;
-
 	Tutor *temp = head;
+
+	std::chrono::time_point<std::chrono::steady_clock> startTime, endTime;
+	std::chrono::microseconds duration;
+
+	startTime = high_resolution_clock::now();
 
 	while (low <= high) {
 		mid = (low + high) / 2;
@@ -948,6 +970,10 @@ Tutor *binarySearchTutorId(Tutor* head, int size, int tutorId) {
 
 		// Evaluate if record = tutorId
 		if (midTutor->tutorId == tutorId) {
+			endTime = high_resolution_clock::now();
+			duration = duration_cast<microseconds>(endTime - startTime);
+			logToFile("Binary Search: " + to_string(duration.count()) + " microseconds");
+			
 			return midTutor;
 		}
 		else {
@@ -961,6 +987,9 @@ Tutor *binarySearchTutorId(Tutor* head, int size, int tutorId) {
 		}
 	}
 
+	endTime = high_resolution_clock::now();
+	duration = duration_cast<microseconds>(endTime - startTime);
+	logToFile("Binary Search: " + to_string(duration.count()) + " microseconds");
 	return NULL;
 }
 
@@ -1037,10 +1066,11 @@ Tutor *partition(Tutor *head, Tutor *tail, Tutor **newHead, Tutor **newEnd)
 			// Move current Tutor to next of listEnd, and change listEnd
 			if (prev) {
 				prev->next = current->next;
+				(current->next)->prev = prev;
 			}
 
 			Tutor *tmp = current->next;
-			tmp->prev = current->prev;
+			//tmp->prev = current->prev;
 			current->next = NULL;
 			current->prev = listEnd;
 			listEnd->next = current;
@@ -1063,7 +1093,7 @@ Tutor *partition(Tutor *head, Tutor *tail, Tutor **newHead, Tutor **newEnd)
 
 Tutor *quickSortRecur(Tutor *head, Tutor *tail)
 {
-	if (!head || head == tail) {
+	if (!head) {
 		return head;
 	}
 
@@ -1085,6 +1115,7 @@ Tutor *quickSortRecur(Tutor *head, Tutor *tail)
 		// Change next of last Tutor of the left half to pivot
 		tmp = getTail(newHead);
 		tmp->next = pivot;
+		pivot->prev = tmp;
 	}
 
 	// Recur for the list after the pivot element

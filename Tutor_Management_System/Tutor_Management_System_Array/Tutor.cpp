@@ -127,6 +127,9 @@ void tutorMenuOptions(string *userRole) {
 // Menu control for Tutor List Menu
 void tutorListMenuControl(int* input, Tutor** head, int* size, int* currentPage, string *userRole)
 {
+	std::chrono::time_point<std::chrono::steady_clock> startTime, endTime;
+	std::chrono::microseconds duration;
+
 	int tutorIdSelection = -1, opt = -1;
 	bool  result = false;
 
@@ -158,16 +161,35 @@ void tutorListMenuControl(int* input, Tutor** head, int* size, int* currentPage,
 		} while (opt > 0);
 		break;
 	case 2:
-		sortByTutorId((*head), *size);
 		cout << "Sort by Tutor Id" << endl;
+
+		startTime = high_resolution_clock::now();
+		sortByTutorId((*head), *size);
+
+		endTime = high_resolution_clock::now();
+		duration = duration_cast<microseconds>(endTime - startTime);
+		logToFile("Bubble Sort: " + to_string(duration.count()) + " microseconds");
 		break;
 	case 3:
-		sortByHourlyPay((*head), 0, *size - 1);
 		cout << "Sort by Pay" << endl;
+
+		startTime = high_resolution_clock::now();
+		sortByHourlyPay((*head), 0, *size - 1);
+
+		endTime = high_resolution_clock::now();
+		duration = duration_cast<microseconds>(endTime - startTime);
+		logToFile("Quick Sort: " + to_string(duration.count()) + " microseconds");
+
 		break;
 	case 4:
-		sortByRating((*head), 0, *size - 1);
 		cout << "Sort by Rating" << endl;
+
+		startTime = high_resolution_clock::now();
+		sortByRating((*head), 0, *size - 1);
+
+		endTime = high_resolution_clock::now();
+		duration = duration_cast<microseconds>(endTime - startTime);
+		logToFile("Merge Sort: " + to_string(duration.count()) + " microseconds");
 		break;
 	case 5:
 		cout << "Enter tutor id: ";
@@ -455,7 +477,7 @@ resetPhoneInput: // Phone Number
 		cout << endl << "Please enter a phone number" << endl;
 		goto resetPhoneInput;
 	}
-	
+
 
 resetAddressInput: // Address
 	cout << "Address: ";
@@ -464,7 +486,7 @@ resetAddressInput: // Address
 		cout << endl << "Please enter an address" << endl;
 		goto resetAddressInput;
 	}
-	
+
 
 resetCenterSelection:
 	cout << endl << "Select a center" << endl;
@@ -479,7 +501,7 @@ resetCenterSelection:
 		cout << endl << "Invalid input. Please provide a valid center id" << endl;
 		goto resetCenterSelection;
 	}
-	
+
 	if (checkCenterCount(centerCode, *head, *size)) {
 		cout << endl << "The centre is already full!" << endl;
 		goto resetCenterSelection;
@@ -497,7 +519,7 @@ resetCenterSelection:
 		centerName = "Pusat Suru Jaya";
 		break;
 	default:
-		cout << endl << "Centre does not exist" << endl << endl;
+		cout << endl << "Centre does not exist" << endl;
 		goto resetCenterSelection;
 	}
 
@@ -690,6 +712,7 @@ SORTING FUNCTIONS
 
 // Bubble Sort
 void sortByTutorId(Tutor* head, int size) {
+
 	for (int i = 0; i < size - 1; i++) {
 		bool swapped = false;
 		for (int j = i + 1; j < size; j++) {
@@ -703,11 +726,10 @@ void sortByTutorId(Tutor* head, int size) {
 		}
 
 		//Break the outer loop if no swap happens
-		if (!swapped) {
+		if (!swapped && i > 0) {
 			break;
 		}
 	}
-
 }
 
 // Quick Sort
@@ -763,11 +785,19 @@ SEARCH FUNCTIONS
 // Binary Search
 Tutor* binarySearchTutorId(Tutor* head, int size, int tutorId) {
 	int low = 0, mid, high = size;
+	std::chrono::time_point<std::chrono::steady_clock> startTime, endTime;
+	std::chrono::microseconds duration;
+
+	startTime = high_resolution_clock::now();
 
 	while (low <= high) {
 		mid = (low + high) / 2;
 
 		if (tutorId == (head + mid)->tutorId) {
+			endTime = high_resolution_clock::now();
+			duration = duration_cast<microseconds>(endTime - startTime);
+			logToFile("Binary Search: " + to_string(duration.count()) + " microseconds");
+
 			return (head + mid);
 		}
 		else {
@@ -779,6 +809,10 @@ Tutor* binarySearchTutorId(Tutor* head, int size, int tutorId) {
 			}
 		}
 	}
+
+	endTime = high_resolution_clock::now();
+	duration = duration_cast<microseconds>(endTime - startTime);
+	logToFile("Binary Search: " + to_string(duration.count()) + " microseconds");
 
 	return NULL;
 }
@@ -809,6 +843,10 @@ int binarySearchTutorIndex(Tutor* head, int size, int tutorId) {
 // Search by Tutor Rating - Linear Search
 void SearchByRating(Tutor* head, int rating, int size) {
 	tm* dateTerminated;
+
+	std::chrono::time_point<std::chrono::steady_clock> startTime, endTime;
+	std::chrono::microseconds duration;
+
 	cout << " Id" << "\t| ";
 	cout << setw(30) << left << "Tutor Name" << " | ";
 	cout << "Pay Rate" << "\t| ";
@@ -819,7 +857,10 @@ void SearchByRating(Tutor* head, int rating, int size) {
 	for (int i = 0; i < 120; i++) {
 		cout << "=";
 	}
-	cout << endl;
+
+
+	// Linear Search for Rating
+	startTime = high_resolution_clock::now();
 	for (int i = 0; i < size; i++)
 	{
 		if ((head + i)->rating == rating) {
@@ -837,8 +878,13 @@ void SearchByRating(Tutor* head, int rating, int size) {
 			else {
 				cout << dateTerminated->tm_year + 1900 << "-" << dateTerminated->tm_mon + 1 << "-" << dateTerminated->tm_mday << endl;
 			}
+
 		}
 	}
+
+	endTime = high_resolution_clock::now();
+	duration = duration_cast<microseconds>(endTime - startTime);
+	logToFile("Linear Search: " + to_string(duration.count()) + " microseconds");
 }
 
 
