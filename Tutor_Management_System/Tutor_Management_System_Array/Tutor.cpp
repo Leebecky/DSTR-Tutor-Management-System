@@ -127,6 +127,9 @@ void tutorMenuOptions(string *userRole) {
 // Menu control for Tutor List Menu
 void tutorListMenuControl(int* input, Tutor** head, int* size, int* currentPage, string *userRole)
 {
+	std::chrono::time_point<std::chrono::steady_clock> startTime, endTime;
+	std::chrono::microseconds duration;
+
 	int tutorIdSelection = -1, opt = -1;
 	bool  result = false;
 
@@ -158,16 +161,35 @@ void tutorListMenuControl(int* input, Tutor** head, int* size, int* currentPage,
 		} while (opt > 0);
 		break;
 	case 2:
-		sortByTutorId((*head), *size);
 		cout << "Sort by Tutor Id" << endl;
+
+		startTime = high_resolution_clock::now();
+		sortByTutorId((*head), *size);
+
+		endTime = high_resolution_clock::now();
+		duration = duration_cast<microseconds>(endTime - startTime);
+		logToFile("Bubble Sort: " + to_string(duration.count()) + " microseconds");
 		break;
 	case 3:
-		sortByHourlyPay((*head), 0, *size - 1);
 		cout << "Sort by Pay" << endl;
+
+		startTime = high_resolution_clock::now();
+		sortByHourlyPay((*head), 0, *size - 1);
+
+		endTime = high_resolution_clock::now();
+		duration = duration_cast<microseconds>(endTime - startTime);
+		logToFile("Quick Sort: " + to_string(duration.count()) + " microseconds");
+
 		break;
 	case 4:
-		sortByRating((*head), 0, *size - 1);
 		cout << "Sort by Rating" << endl;
+
+		startTime = high_resolution_clock::now();
+		sortByRating((*head), 0, *size - 1);
+
+		endTime = high_resolution_clock::now();
+		duration = duration_cast<microseconds>(endTime - startTime);
+		logToFile("Merge Sort: " + to_string(duration.count()) + " microseconds");
 		break;
 	case 5:
 		cout << "Enter tutor id: ";
@@ -455,7 +477,7 @@ resetPhoneInput: // Phone Number
 		cout << endl << "Please enter a phone number" << endl;
 		goto resetPhoneInput;
 	}
-	
+
 
 resetAddressInput: // Address
 	cout << "Address: ";
@@ -464,7 +486,7 @@ resetAddressInput: // Address
 		cout << endl << "Please enter an address" << endl;
 		goto resetAddressInput;
 	}
-	
+
 
 resetCenterSelection:
 	cout << endl << "Select a center" << endl;
@@ -479,7 +501,7 @@ resetCenterSelection:
 		cout << endl << "Invalid input. Please provide a valid center id" << endl;
 		goto resetCenterSelection;
 	}
-	
+
 	if (checkCenterCount(centerCode, *head, *size)) {
 		cout << endl << "The centre is already full!" << endl;
 		goto resetCenterSelection;
@@ -690,6 +712,7 @@ SORTING FUNCTIONS
 
 // Bubble Sort
 void sortByTutorId(Tutor* head, int size) {
+
 	for (int i = 0; i < size - 1; i++) {
 		bool swapped = false;
 		for (int j = i + 1; j < size; j++) {
@@ -703,11 +726,10 @@ void sortByTutorId(Tutor* head, int size) {
 		}
 
 		//Break the outer loop if no swap happens
-		if (!swapped) {
+		if (!swapped && i >0) {
 			break;
 		}
 	}
-
 }
 
 // Quick Sort
