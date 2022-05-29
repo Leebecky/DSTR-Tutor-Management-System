@@ -849,6 +849,7 @@ SEARCH FUNCTIONS
 // Search by Tutor Id - Binary Search
 void searchByTutorId(Tutor *head, Tutor *tail, int *tutorListSize, string *userRole) {
 	int tutorId = -1, opt = -1;
+
 resetTutorIdSearch:
 
 	cout << "Enter tutor id: ";
@@ -879,6 +880,10 @@ resetTutorIdSearch:
 // Search by Tutor Rating - Linear Search
 void searchByTutorRating(Tutor *head, int *tutorListSize) {
 	int tutorRating = -1, opt = -1;
+
+	std::chrono::time_point<std::chrono::steady_clock> startTime, endTime;
+	std::chrono::microseconds duration;	
+
 resetTutorRatingSearch:
 
 	cout << "Enter tutor rating: ";
@@ -910,6 +915,7 @@ resetTutorRatingSearch:
 	}
 
 	// Linear Search for Rating
+	startTime = high_resolution_clock::now();
 	while (temp != NULL) {
 
 		if (temp->rating == tutorRating) {
@@ -928,10 +934,14 @@ resetTutorRatingSearch:
 			else {
 				cout << dateTerminated->tm_year + 1900 << "-" << dateTerminated->tm_mon + 1 << "-" << dateTerminated->tm_mday << endl;
 			}
+			break;
 		}
 
 		temp = temp->next;
 	}
+	endTime = high_resolution_clock::now();
+	duration = duration_cast<microseconds>(endTime - startTime);
+	logToFile("Linear Search: " + to_string(duration.count()) + " microseconds");
 	cout << endl;
 }
 
@@ -945,8 +955,12 @@ UTILITY FUNCTIONS FOR SORTING/BINARY SEARCH
 // Binary Search
 Tutor *binarySearchTutorId(Tutor* head, int size, int tutorId) {
 	int low = 1, mid, high = size;
-
 	Tutor *temp = head;
+
+	std::chrono::time_point<std::chrono::steady_clock> startTime, endTime;
+	std::chrono::microseconds duration;
+
+	startTime = high_resolution_clock::now();
 
 	while (low <= high) {
 		mid = (low + high) / 2;
@@ -956,6 +970,10 @@ Tutor *binarySearchTutorId(Tutor* head, int size, int tutorId) {
 
 		// Evaluate if record = tutorId
 		if (midTutor->tutorId == tutorId) {
+			endTime = high_resolution_clock::now();
+			duration = duration_cast<microseconds>(endTime - startTime);
+			logToFile("Binary Search: " + to_string(duration.count()) + " microseconds");
+			
 			return midTutor;
 		}
 		else {
@@ -969,6 +987,9 @@ Tutor *binarySearchTutorId(Tutor* head, int size, int tutorId) {
 		}
 	}
 
+	endTime = high_resolution_clock::now();
+	duration = duration_cast<microseconds>(endTime - startTime);
+	logToFile("Binary Search: " + to_string(duration.count()) + " microseconds");
 	return NULL;
 }
 
