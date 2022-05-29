@@ -196,6 +196,7 @@ int tutorMenuControl(Tutor *head, int size, int menuSelection, int tutorId) {
 	string dataValue = "";
 	bool result = false;
 
+	sortByTutorId(head, size);
 	Tutor *data = binarySearchTutorId(head, size, tutorId);
 	int dataIndex = binarySearchTutorIndex(head, size, tutorId);
 
@@ -618,6 +619,7 @@ resetSubjectSelection: // Subject Selection + Hourly Pay Rate
 
 // Delete Tutor - Binary Search
 bool deleteTutor(Tutor** head, int low, int size, int tutorId) {
+	auto startTime = high_resolution_clock::now();
 	int mid, p = 0, high = size;
 	time_t today = time(NULL);
 
@@ -642,6 +644,10 @@ bool deleteTutor(Tutor** head, int low, int size, int tutorId) {
 				delete[](*head);
 				(*head) = newArray;
 
+				auto endTime = high_resolution_clock::now();
+				auto duration = duration_cast<microseconds>(endTime - startTime);
+				logToFile("Deletion_Array: " + to_string(duration.count()) + " microseconds");
+
 				p = 1;
 				return true;
 			}
@@ -665,6 +671,8 @@ bool deleteTutor(Tutor** head, int low, int size, int tutorId) {
 
 // Modify Tutor Record
 bool modifyTutor(Tutor *data, string *dataValue, string updateAttribute) {
+	auto startTime = high_resolution_clock::now();
+
 	if (*dataValue == "") {
 
 		cout << endl << "No data provided. " << updateAttribute << " not updated" << endl;
@@ -677,6 +685,10 @@ bool modifyTutor(Tutor *data, string *dataValue, string updateAttribute) {
 	else {
 		data->address = *dataValue;
 	}
+
+	auto endTime = high_resolution_clock::now();
+	auto duration = duration_cast<microseconds>(endTime - startTime);
+	logToFile("Modify_Array: " + to_string(duration.count()) + " microseconds");
 
 	return true;
 }
@@ -762,12 +774,18 @@ SEARCH FUNCTIONS
 
 // Binary Search
 Tutor* binarySearchTutorId(Tutor* head, int size, int tutorId) {
+	auto startTime = high_resolution_clock::now();
 	int low = 0, mid, high = size;
 
 	while (low <= high) {
 		mid = (low + high) / 2;
 
 		if (tutorId == (head + mid)->tutorId) {
+
+			auto endTime = high_resolution_clock::now();
+			auto duration = duration_cast<microseconds>(endTime - startTime);
+			logToFile("BinarySearch_Array: " + to_string(duration.count()) + " microseconds");
+
 			return (head + mid);
 		}
 		else {
@@ -779,6 +797,10 @@ Tutor* binarySearchTutorId(Tutor* head, int size, int tutorId) {
 			}
 		}
 	}
+
+	auto endTime = high_resolution_clock::now();
+	auto duration = duration_cast<microseconds>(endTime - startTime);
+	logToFile("BinarySearch_Array: " + to_string(duration.count()) + " microseconds");
 
 	return NULL;
 }

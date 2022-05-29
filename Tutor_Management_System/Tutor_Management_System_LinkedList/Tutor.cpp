@@ -702,6 +702,7 @@ bool deleteTutor(Tutor** head, Tutor **tail, int size, int tutorId) {
 		// 1. Unhook the node
 		// 2. Delete [node]
 
+	auto startTime = high_resolution_clock::now();
 	time_t today = time(NULL);
 	Tutor *data = binarySearchTutorId((*head), size, tutorId);
 
@@ -739,6 +740,10 @@ bool deleteTutor(Tutor** head, Tutor **tail, int size, int tutorId) {
 
 			delete data;
 
+			auto endTime = high_resolution_clock::now();
+			auto duration = duration_cast<microseconds>(endTime - startTime);
+			logToFile("Deletion_LinkedList: " + to_string(duration.count()) + " microseconds");
+
 			return true;
 		}
 	}
@@ -746,6 +751,7 @@ bool deleteTutor(Tutor** head, Tutor **tail, int size, int tutorId) {
 
 // Modify Tutor Record
 bool modifyTutor(Tutor *data, string *dataValue, string updateAttribute) {
+	auto startTime = high_resolution_clock::now();
 
 	if (*dataValue == "") {
 
@@ -759,6 +765,10 @@ bool modifyTutor(Tutor *data, string *dataValue, string updateAttribute) {
 	else {
 		data->address = *dataValue;
 	}
+
+	auto endTime = high_resolution_clock::now();
+	auto duration = duration_cast<microseconds>(endTime - startTime);
+	logToFile("Modify_LinkedList: " + to_string(duration.count()) + " microseconds");
 
 	return true;
 }
@@ -936,6 +946,7 @@ UTILITY FUNCTIONS FOR SORTING/BINARY SEARCH
 
 // Binary Search
 Tutor *binarySearchTutorId(Tutor* head, int size, int tutorId) {
+	auto startTime = high_resolution_clock::now();
 	int low = 1, mid, high = size;
 
 	Tutor *temp = head;
@@ -948,6 +959,11 @@ Tutor *binarySearchTutorId(Tutor* head, int size, int tutorId) {
 
 		// Evaluate if record = tutorId
 		if (midTutor->tutorId == tutorId) {
+
+			auto endTime = high_resolution_clock::now();
+			auto duration = duration_cast<microseconds>(endTime - startTime);
+			logToFile("BinarySearch_LinkedList: " + to_string(duration.count()) + " microseconds");
+
 			return midTutor;
 		}
 		else {
@@ -960,6 +976,10 @@ Tutor *binarySearchTutorId(Tutor* head, int size, int tutorId) {
 			}
 		}
 	}
+
+	auto endTime = high_resolution_clock::now();
+	auto duration = duration_cast<microseconds>(endTime - startTime);
+	logToFile("BinarySearch_LinkedList: " + to_string(duration.count()) + " microseconds");
 
 	return NULL;
 }

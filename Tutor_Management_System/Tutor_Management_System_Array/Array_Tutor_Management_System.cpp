@@ -1,5 +1,5 @@
 /*
-Tutor_Management_System_LinkedList
+Tutor_Management_System_Array
 ===========================================================
 LOGIN CREDENTIALS
 ===========================================================
