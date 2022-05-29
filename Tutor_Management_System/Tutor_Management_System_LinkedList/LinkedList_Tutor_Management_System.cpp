@@ -70,6 +70,7 @@ int main()
 			cout << endl;
 			do
 			{
+				// Display Tutor List
 				displayTutorList(head, tutorListCount, &currentPage);
 				tutorListMenu(&userRole);
 				cin >> tutorMenu;
@@ -83,9 +84,7 @@ int main()
 				}
 
 				tutorListMenuControl(&tutorMenu, &head, &tail, &tutorListCount, &currentPage, &userRole);
-
-
-
+				
 				cout << endl;
 			} while (tutorMenu > 0);
 
@@ -94,23 +93,7 @@ int main()
 			cout << endl << "Add New Tutor" << endl;
 			cout << "==============================" << endl;
 			addTutor(&head, &tail, &tutorListCount);
-			/*do
-			{*/
-
-			//cout << endl << "Do you still want to add a new tutor record?"
-			//	<< " 1. Yes, 0. No : ";
-			//cin >> addTutorChoice;
-			//// Input validation
-			//if (cin.fail()) {
-			//	cin.clear();
-			//	cin.ignore(numeric_limits<streamsize>::max(), '\n');
-			//	cout << endl << "Invalid input. Please provide a valid id" << endl;
-			//	continue;
-			//}
-
-		//} while (addTutorChoice > 1);
-
-
+			
 			break;
 		case 3: // Search by Id
 			cout << endl << "Search for Tutor by ID" << endl;
@@ -122,6 +105,9 @@ int main()
 			cout << "==============================" << endl;
 			searchByTutorRating(head, &tutorListCount);
 			break;
+		case 0: // Exit
+			cout << endl << "System closing. Please wait..." << endl;
+			cout << "Thank you, have a nice day!" << endl;
 		default:
 			cout << endl << "No corresponding option" << endl;
 			break;
