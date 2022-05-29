@@ -602,7 +602,7 @@ resetAddressInput: // Address
 			flag = 1;
 		}
 		else {
-			cout << endl << "Centre does not exist" << endl << endl;
+			cout << endl << "Centre does not exist" << endl;
 			flag = 0;
 			continue;
 		}
@@ -934,7 +934,7 @@ resetTutorRatingSearch:
 			else {
 				cout << dateTerminated->tm_year + 1900 << "-" << dateTerminated->tm_mon + 1 << "-" << dateTerminated->tm_mday << endl;
 			}
-			break;
+	
 		}
 
 		temp = temp->next;
@@ -942,7 +942,7 @@ resetTutorRatingSearch:
 	endTime = high_resolution_clock::now();
 	duration = duration_cast<microseconds>(endTime - startTime);
 	logToFile("Linear Search: " + to_string(duration.count()) + " microseconds");
-	cout << endl;
+	
 }
 
 

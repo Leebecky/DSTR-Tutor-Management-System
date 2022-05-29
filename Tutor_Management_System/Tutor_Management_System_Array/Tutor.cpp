@@ -519,7 +519,7 @@ resetCenterSelection:
 		centerName = "Pusat Suru Jaya";
 		break;
 	default:
-		cout << endl << "Centre does not exist" << endl << endl;
+		cout << endl << "Centre does not exist" << endl;
 		goto resetCenterSelection;
 	}
 
@@ -726,7 +726,7 @@ void sortByTutorId(Tutor* head, int size) {
 		}
 
 		//Break the outer loop if no swap happens
-		if (!swapped && i >0) {
+		if (!swapped && i > 0) {
 			break;
 		}
 	}
@@ -879,7 +879,6 @@ void SearchByRating(Tutor* head, int rating, int size) {
 				cout << dateTerminated->tm_year + 1900 << "-" << dateTerminated->tm_mon + 1 << "-" << dateTerminated->tm_mday << endl;
 			}
 
-			break;
 		}
 	}
 
