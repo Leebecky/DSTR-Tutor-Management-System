@@ -157,7 +157,7 @@ void tutorListMenuControl(int* input, Tutor** head, int* size, int* currentPage,
 
 			tutorMenuOptions(userRole);
 			cin >> opt;
-			tutorIdSelection = tutorMenuControl((*head), *size, opt, tutorIdSelection);
+			tutorIdSelection = tutorMenuControl((*head), *size, opt, tutorIdSelection, userRole);
 		} while (opt > 0);
 		break;
 	case 2:
@@ -192,6 +192,10 @@ void tutorListMenuControl(int* input, Tutor** head, int* size, int* currentPage,
 		logToFile("Merge Sort: " + to_string(duration.count()) + " microseconds");
 		break;
 	case 5:
+		if (*userRole != "HR") { // Only HR allowed to modifiy
+			break;
+		}
+
 		cout << "Enter tutor id: ";
 		cin >> tutorIdSelection;
 		sortByTutorId((*head), *size);
@@ -214,7 +218,7 @@ void tutorListMenuControl(int* input, Tutor** head, int* size, int* currentPage,
 }
 
 // Single Tutor View Menu Control
-int tutorMenuControl(Tutor *head, int size, int menuSelection, int tutorId) {
+int tutorMenuControl(Tutor *head, int size, int menuSelection, int tutorId, string *userRole) {
 	string dataValue = "";
 	bool result = false;
 
@@ -230,6 +234,10 @@ int tutorMenuControl(Tutor *head, int size, int menuSelection, int tutorId) {
 	switch (menuSelection) {
 
 	case 1: // modify address
+		if (*userRole != "HR") { // Only HR allowed to modifiy
+			return data->tutorId;
+		}
+
 		cout << "Enter the address: ";
 		cin.ignore();
 		getline(cin, dataValue);
@@ -241,6 +249,10 @@ int tutorMenuControl(Tutor *head, int size, int menuSelection, int tutorId) {
 
 		return data->tutorId;
 	case 2: // modify phone number
+		if (*userRole != "HR") { // Only HR allowed to modifiy
+			return data->tutorId;
+		}
+
 		cout << "Enter the phone number: ";
 		cin.ignore();
 		getline(cin, dataValue);

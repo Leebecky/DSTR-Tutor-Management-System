@@ -55,7 +55,7 @@ void mainMenu(); // Main Menu
 void tutorListMenu(string *userRole); // Main Menu > Display All Tutor
 void tutorListMenuControl(int* input, Tutor** head, Tutor** tail, int *count, int* currentPage, string *userRole); //Tutor List Menu Control
 void tutorMenuOptions(string *userRole);
-int tutorMenuControl(Tutor *head, Tutor *tail, int size, int menuSelection, int tutorId);
+int tutorMenuControl(Tutor *head, Tutor *tail, int size, int menuSelection, int tutorId, string *userRole);
 
 /*
 ===========================================================
