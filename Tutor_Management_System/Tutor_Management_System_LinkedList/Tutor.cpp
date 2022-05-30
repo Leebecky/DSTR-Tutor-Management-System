@@ -968,8 +968,8 @@ Tutor *binarySearchTutorId(Tutor* head, int size, int tutorId) {
 	int low = 1, mid, high = size;
 	Tutor *temp = head;
 
-	std::chrono::time_point<std::chrono::steady_clock> startTime, endTime;
-	std::chrono::microseconds duration;
+	//std::chrono::time_point<std::chrono::steady_clock> startTime, endTime;
+	//std::chrono::microseconds duration;
 
 	startTime = high_resolution_clock::now();
 

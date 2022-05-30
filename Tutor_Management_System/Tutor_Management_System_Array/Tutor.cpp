@@ -798,8 +798,8 @@ SEARCH FUNCTIONS
 Tutor* binarySearchTutorId(Tutor* head, int size, int tutorId) {
 	auto startTime = high_resolution_clock::now();
 	int low = 0, mid, high = size;
-	std::chrono::time_point<std::chrono::steady_clock> startTime, endTime;
-	std::chrono::microseconds duration;
+	//std::chrono::time_point<std::chrono::steady_clock> startTime, endTime;
+	//std::chrono::microseconds duration;
 
 	startTime = high_resolution_clock::now();
 
@@ -858,8 +858,8 @@ int binarySearchTutorIndex(Tutor* head, int size, int tutorId) {
 void SearchByRating(Tutor* head, int rating, int size) {
 	tm* dateTerminated;
 
-	std::chrono::time_point<std::chrono::steady_clock> startTime, endTime;
-	std::chrono::microseconds duration;
+	//std::chrono::time_point<std::chrono::steady_clock> startTime, endTime;
+	//std::chrono::microseconds duration;
 
 	cout << " Id" << "\t| ";
 	cout << setw(30) << left << "Tutor Name" << " | ";
@@ -874,7 +874,7 @@ void SearchByRating(Tutor* head, int rating, int size) {
 
 
 	// Linear Search for Rating
-	startTime = high_resolution_clock::now();
+	auto startTime = high_resolution_clock::now();
 	for (int i = 0; i < size; i++)
 	{
 		if ((head + i)->rating == rating) {
@@ -896,8 +896,8 @@ void SearchByRating(Tutor* head, int rating, int size) {
 		}
 	}
 
-	endTime = high_resolution_clock::now();
-	duration = duration_cast<microseconds>(endTime - startTime);
+	auto endTime = high_resolution_clock::now();
+	auto duration = duration_cast<microseconds>(endTime - startTime);
 	logToFile("Linear Search: " + to_string(duration.count()) + " microseconds");
 }
 
