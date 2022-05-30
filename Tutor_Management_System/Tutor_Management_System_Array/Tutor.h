@@ -87,6 +87,6 @@ SEARCHING FUNCTIONS
 ===========================================================
 */
 
-Tutor *binarySearchTutorId(Tutor* head, int size, int tutorId); //Search tutor record by IF
+Tutor *binarySearchTutorId(Tutor* head, int size, int tutorId); //Search tutor record by ID
 int binarySearchTutorIndex(Tutor* head, int size, int tutorId);
 void SearchByRating(Tutor* head, int rating, int size); // Search/filter tutor(s) by rating

@@ -483,7 +483,7 @@ resetNameInput:
 
 resetPhoneInput: // Phone Number
 	cout << "Phone: ";
-	cin >> phone;
+	getline(cin, phone);
 
 	if (phone.empty()) {
 		cout << endl << "Please enter a phone number" << endl;
